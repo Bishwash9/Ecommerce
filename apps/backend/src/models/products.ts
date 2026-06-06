@@ -32,12 +32,12 @@ const productsSchema = new Schema(
             required: true
         },
 
-        quantity: {
+        stock: {
             type: Number,
             required: true,
             validate: {
                 validator: (value:number) => value >= 0,
-                message: 'Quantity must be a non-negative number'
+                message: 'Stock must be a non-negative number'
             }
         },
 
