@@ -1,6 +1,24 @@
 
 import { User } from "../models/users.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+//helper function to generate JWT tokens
+export const generateTokens = (user: any) => {
+    const accessToken = jwt.sign(
+        {id: user._id,role: user.role},
+        process.env.JWT_ACCESS_KEY!,
+        {expiresIn: '15m'}  
+    );
+
+    const refreshToken = jwt.sign(
+        {id: user._id},
+        process.env.JWT_REFRESH_KEY!,
+        {expiresIn: '7d'}
+    );
+
+    return {accessToken, refreshToken};
+}
 
 export const registerUser = async (
   data:  {
@@ -52,9 +70,59 @@ export const loginUser = async (
         throw new Error('Invalid email or password');
     }
 
+    const {accessToken, refreshToken} = generateTokens(user);
+
+    user.refreshToken = user.refreshToken || [];
+    user.refreshToken.push(refreshToken);
+    await user.save();
+
     return {
+       user: {
         id: user._id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        role: user.role
+       },
+         accessToken,
+         refreshToken
     };
 };
+
+// new service function to refresh access token
+export const refreshAccessToken = async (incomingRefreshToken: string) => {
+    
+    //verify jwt using refresh key
+    const decoded = jwt.verify(incomingRefreshToken, process.env.JWT_REFRESH_KEY!) as {id: string};
+
+    //find user by id
+    const user = await User.findById(decoded.id);
+    if(!user || !user.refreshToken.includes(incomingRefreshToken)) {
+        throw new Error('Invalid refresh token');
+    }
+
+    //remove the used token 
+    user.refreshToken = user.refreshToken.filter(token => token !== incomingRefreshToken);
+
+    //generate new tokens
+    const tokens = generateTokens(user);
+
+    //save the new refresh token
+    user.refreshToken.push(tokens.refreshToken);
+    await user.save();
+
+    return tokens; //return the new access token and refresh token
+};
+
+export const logoutUser = async (activeRefreshToken: string, userID: string) => {
+    const user = await User.findById(userID);
+    if(!user) {
+        throw new Error('User not found');
+    }
+
+    user.refreshToken = user.refreshToken.filter(token => token !== activeRefreshToken);
+    await user.save();
+
+    return {message: 'Logged out successfully'};
+}
+
+

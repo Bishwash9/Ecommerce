@@ -1,8 +1,10 @@
 import {Router} from 'express';
-import { registerUser, loginUser } from '../controllers/user.controller.js';
+import { registerUser, loginUser, refreshSession } from '../controllers/user.controller.js';
 
 import { validate } from '../middlewares/user.middleware.js';
 import { registerUserSchema, loginUserSchema} from '../validations/user.validation.js';
+
+import { authenticate } from '../middlewares/auth.middleware.js';
 
 
 const router = Router();
@@ -11,4 +13,6 @@ router.post('/register', validate(registerUserSchema), registerUser);
 
 router.post('/login', validate(loginUserSchema), loginUser);
 
-export default router;
+router.post('/refresh-token', refreshSession);
+
+export default router; 
