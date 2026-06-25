@@ -30,7 +30,7 @@ export const LoginForm = () => {
             const response = await authService.login(data.email, data.password);
 
             const userData = response.data.user;
-            const accessToken = response.data.tokens.accessToken;
+            const accessToken = response.data.accessToken;
 
             //security check for role 
             if (userData.role !== 'admin') {

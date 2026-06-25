@@ -32,7 +32,7 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}): Pr
 
             //call the refresh token endpoint to get new access token
             try {
-                const refreshResponse = await fetch(`${BASE_URL}/refresh-token`, {
+                const refreshResponse = await fetch(`${BASE_URL}/users/refresh-token`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include', //ensures cookies are sent with the request

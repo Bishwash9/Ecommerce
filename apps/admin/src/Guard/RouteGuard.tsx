@@ -1,4 +1,4 @@
-import { Navigate} from "react-router-dom";
+import { Navigate, Outlet} from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 
 const isTokenValid = (token: string | null): boolean => {
@@ -20,7 +20,7 @@ export const RouteGuard = () => {
     const isLoggedIn = isTokenValid(token);
 
    if(isLoggedIn && user){
-      return <Navigate to="/dashboard" replace />;
+      return <Outlet />
    }else {
     return <Navigate to="/" replace />;
    }

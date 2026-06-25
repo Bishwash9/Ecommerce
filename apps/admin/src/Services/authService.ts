@@ -3,22 +3,22 @@ import { apiClient } from '../Config/api';
 export const authService = {
     login: async (email: string, password: string): Promise<any> => {
         
-        const data = await apiClient('/login', {
+        const loginData = await apiClient('/users/login', {
             method: 'POST',
             body: JSON.stringify({ email, password }),
         });
-        if(data.tokens){
-            localStorage.setItem('accessToken', data.tokens.accessToken);
+        if(loginData.data.accessToken){
+            localStorage.setItem('accessToken', loginData.data.accessToken);
         }
 
-        return data;
+        return loginData;
     },
     
     register: async (name: string, email: string, password: string): Promise<any> => {
-        const data = await apiClient('/register', {
+        const registerData = await apiClient('/users/register', {
             method: 'POST',
             body: JSON.stringify({ name, email, password }),
         });
-        return data;
+        return registerData;
     }
 }
