@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import * as userService from '../services/user.service.js';
+import type { AuthenticatedRequest } from '../middlewares/auth.middleware.js';
 
 export const registerUser = async (req: Request, res: Response) => {
 
@@ -83,4 +84,36 @@ export const refreshSession = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const logoutUser = async (req: Request, res: Response) => {
+    const incomingRefreshToken = req.cookies.refreshToken;
+    
+    
+    if(!incomingRefreshToken) {
+        return res.status(401).json({ message: 'Refresh token not found' });
+    }
+
+    try {
+        const { id } = (req as AuthenticatedRequest).user;   //get user id from request body
+        await userService.logoutUser(incomingRefreshToken, id);
+
+        //clear the cookie
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict'
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'Logged out successfully'
+        });
+    }catch(error){
+        res.status(400).json({
+            message: error instanceof Error ? error.message : 'Failed to logout'
+        });
+    }
+
+   
+}
 
