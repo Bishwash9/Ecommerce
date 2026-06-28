@@ -23,7 +23,7 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}): Pr
     try {
 
 
-        const response = await fetch(url, { ...options, headers });
+        const response = await fetch(url, fetchOptions);
 
         //handle access token expiration
         if (response.status === 401 && !endpoint.includes('login')) {
@@ -60,7 +60,8 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}): Pr
                 } else {
                     //refresh token is also invalid then
                     localStorage.removeItem('accessToken');
-                    window.location.href = '/login'; //redirect to login page
+                    localStorage.removeItem('user');
+                    window.location.href = '/'; //redirect to login page
                     throw new Error('Session expired. Please log in again.');
                 }
 
@@ -68,7 +69,8 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}): Pr
             } catch (refreshError) {
                 console.error('Refresh Token Error:', refreshError);
                 localStorage.removeItem('accessToken');
-                window.location.href = '/login'; //redirect to login page
+                localStorage.removeItem('user');
+                window.location.href = '/'; //redirect to login page
             }
 
         }

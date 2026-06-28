@@ -4,6 +4,7 @@ import { LoginForm } from './Auth/LoginForm'
 import Dashboard from './Pages/Dashboard'
 import  { PublicRoute } from './Auth/PublicRoute'
 import { RouteGuard } from './Guard/RouteGuard'
+import { DashboardLayout } from './Components/Layout/DashboardLayout'
 
 
 function App() {
@@ -16,8 +17,12 @@ function App() {
             <Route path='/' element={<LoginForm />}/>
           </Route>
           
+          <Route element={<DashboardLayout/>}>
+
           <Route element={<RouteGuard/>}>
             <Route path='/dashboard' element={<Dashboard />} />
+          </Route>
+          
           </Route>
         </Routes>
       </BrowserRouter>

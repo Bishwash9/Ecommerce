@@ -12,6 +12,7 @@ interface User {
 //define what context will hold
 interface AuthContextType {
     user: User | null;
+    setUser: (user:User | null) => void;
     accessToken: string | null;
     login: (user: User, accessToken: string) => void;
     logout: () => void;
@@ -20,8 +21,36 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({children}: {children: React.ReactNode}) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [accessToken, setAccessToken] = useState<string | null>(null);
+    const [user, setUserState] = useState<User | null>(() => {
+        try{
+
+            const userData = localStorage.getItem('user');
+            
+            if(userData){
+                const parsedUser = JSON.parse(userData);
+                return parsedUser as User;
+            }
+        }catch (error) {
+            console.error('Error parsing user data from localStorage:', error);
+        }
+
+        return null;
+    });
+
+    const setUser = (newUser: User | null) => {
+        if(newUser){
+            localStorage.setItem('user', JSON.stringify(newUser));
+        } else {
+            localStorage.removeItem('user');
+        }
+        setUserState(newUser);
+    }
+
+    const [accessToken, setAccessToken] = useState<string | null>(() => {
+        return localStorage.getItem('accessToken');
+    });
+
+    
 
     const login = (userData: User, accessToken: string) => {
         setUser(userData);
@@ -34,7 +63,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
     };
 
     return ( 
-        <AuthContext.Provider value={{user, accessToken, login, logout}}>
+        <AuthContext.Provider value={{user, accessToken, login, logout, setUser}}>
             {children}
         </AuthContext.Provider>
     );

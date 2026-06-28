@@ -1,5 +1,6 @@
 import { Navigate, Outlet} from "react-router-dom";
 
+
 const isTokenValid = (token: string | null): boolean => {
     if (!token) return false;
 
