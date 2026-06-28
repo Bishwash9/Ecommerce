@@ -44,7 +44,7 @@ export function Sidebar({onClose}: {onClose?: () => void}) {
             </div>
 
             <nav className='flex-1 flex flex-col min-h-0 py-4'>
-                <ul className='flex flex-col gap-1.5'>
+                <ul className='flex flex-col gap-3'>
                     {SidebarItems.map((item) => {
                         const isActive = item.path === window.location.pathname;
                         return (
@@ -56,7 +56,7 @@ export function Sidebar({onClose}: {onClose?: () => void}) {
                                         if(window.innerWidth < 1024) onClose?.();
                                     }
                                 }}
-                                className={`group mx-3 px-3 py-2.5 flex items-center gap-3 cursor-pointer transition-all duration-300 rounded-xl hover:bg-white hover:text-[#4C3BC0] ${isActive ? 'bg-white text-[#4C3BC0]' : 'text-white hover:bg-white/10'} `}
+                                className={`group mx-3 px-3 py-2.5 flex items-center gap-8 cursor-pointer transition-all duration-300 rounded-xl hover:bg-white hover:text-[#4C3BC0] ${isActive ? 'bg-white text-[#4C3BC0]' : 'text-white hover:bg-white'} `}
                                 >
                                     <div className='flex justify-center items-center shrink-0'>
                                         <span className={`text-xl transition-transform duration-300 ${isActive ? 'text-[#4C3BC0]' : 'text-white'} group-hover:text-[#4C3BC0]`}>{item.icon}</span>
@@ -77,12 +77,12 @@ export function Sidebar({onClose}: {onClose?: () => void}) {
                         handleLogout();
                     }
                 }} 
-                className='mt-auto group h-12 flex items-center cursor-pointer transition-all duration-300 hover:bg-white/10 '
+                className='mt-auto group flex items-center cursor-pointer rounded-xl transition-all duration-300 hover:bg-white hover:text-red-600 mx-3 px-3 py-2.5 '
                 >
                     <div className='w-16 flex justify-center items-center shrink-0'>
-                        <LogOut size={20} className='text-red-300 group-hover:text-red-500'/>
+                        <LogOut size={20} className='text-red-500 group-hover:text-red-600'/>
                     </div>
-                    {!collapsed && <span className='text-sm text-left text-red-300 font-bold flex-1 group-hover:text-red-500'>Log Out</span>}
+                    {!collapsed && <span className='text-sm text-left text-red-500 font-bold flex-1 group-hover:text-red-600'>Log Out</span>}
 
                 </button>
             </nav>
