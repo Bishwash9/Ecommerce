@@ -28,9 +28,17 @@ export const loginUser = async (req: Request, res: Response) => {
        res.cookie('refreshToken', result.refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', //encrypted only in production
-            sameSite: 'strict', //prevents CSRF attacks
+            sameSite: 'lax', //prevents CSRF attacks
             maxAge: 7 * 24 * 60 * 60 * 1000 //7 days
        });
+
+       //setting accesstoken cookie for my user side
+       res.cookie('accessToken', result.accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 15 * 60 * 1000 //15 minutes
+       })
 
        //return only the user details and short lived acces token
        res.status(200).json({
