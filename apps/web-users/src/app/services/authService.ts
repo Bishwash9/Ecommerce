@@ -16,7 +16,7 @@ export const authService = {
     },
 
     register: async (name: string, email: string, password: string): Promise<any> => {
-        const registerData = await apiClient('users/register', {
+        const registerData = await apiClient('/users/register', {
             method: 'POST',
             body: JSON.stringify({ name, email, password }),
         });
