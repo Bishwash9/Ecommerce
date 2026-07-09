@@ -35,7 +35,7 @@ export default function LoginPage() {
 
                 await authService.login(data.email, data.password);
 
-                router.push('/home');
+                router.push('/');
             } else {
                 const registerData = data as RegisterData;
                 await authService.register(registerData.name, registerData.email, registerData.password);
@@ -81,7 +81,7 @@ export default function LoginPage() {
                         <p className='text-sm text-gray-500 mt-1'>
                             {isLoginmode ? (
                                 <>
-                                    Don&apos;t have an account?{" "}|
+                                    Don&apos;t have an account?{" "}
                                     <button
                                         type='button'
                                         onClick={() => switchMode('signup')}
