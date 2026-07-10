@@ -4,7 +4,7 @@ import { registerUser, loginUser, refreshSession, logoutUser } from '../controll
 import { validate } from '../middlewares/user.middleware.js';
 import { registerUserSchema, loginUserSchema} from '../validations/user.validation.js';
 
-import { authenticate } from '../middlewares/auth.middleware.js';
+
 
 
 const router = Router();
