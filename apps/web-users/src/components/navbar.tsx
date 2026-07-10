@@ -84,7 +84,7 @@ export default function Navbar({ isLoggedIn }: NavbarProps) {
                     </>
                 ) : (
                     <>
-                    <Link href='/login' className='text-neutral-500 hover:text-neutral-900 transition-colors'>
+                    <Link href='/login' className='text-neutral-900 border hover:bg-neutral-900 hover:text-white  px-5 py-1 rounded-md  transition-colors duration-300'>
                         Login
                     </Link>
                     </>
