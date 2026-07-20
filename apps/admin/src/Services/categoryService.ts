@@ -25,6 +25,13 @@ export const categoryService = {
             method: 'DELETE',
         });
         return deletData;
+    },
+
+    fetchCategories: async(): Promise<any> => {
+        const fetchData = await apiClient('/fetch-categories', {
+            method: 'GET',
+        });
+        return fetchData;
     }
 };
 
