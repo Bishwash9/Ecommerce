@@ -1,8 +1,8 @@
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { LoginForm } from './Auth/LoginForm'
+import { LoginForm } from './Features/Auth/LoginForm'
 import Dashboard from './Pages/Dashboard'
-import  { PublicRoute } from './Auth/PublicRoute'
+import  { PublicRoute } from './Features/Auth/PublicRoute'
 import { RouteGuard } from './Guard/RouteGuard'
 import { DashboardLayout } from './Components/Layout/DashboardLayout'
 

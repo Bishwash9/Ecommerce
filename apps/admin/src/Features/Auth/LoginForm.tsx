@@ -1,10 +1,10 @@
-import { authService } from '../Services/authService';
+import { authService } from '../../Services/authService';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext';
+import { useAuth } from '../../Context/AuthContext';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, type LoginData } from '../Schemas/auth.schema';
+import { loginSchema, type LoginData } from '../../Schemas/auth.schema';
 import adminImage from '../assets/admin.png'; // Import the image
 
 
