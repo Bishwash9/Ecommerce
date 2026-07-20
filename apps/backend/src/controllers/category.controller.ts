@@ -59,3 +59,18 @@ export const deleteCategory = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const fetchCategories = async (req: Request, res: Response) => {
+    try {
+        const categories = await categoryService.fetchCategories();
+
+        res.status(200).json({
+            success: true,
+            data: categories
+        });
+    }catch(error) {
+        res.status(400).json({
+            message: error instanceof Error ? error.message : 'Something went wrong'
+        });
+    }
+};

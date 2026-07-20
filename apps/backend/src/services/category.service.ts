@@ -48,3 +48,14 @@ export const deleteCategory = async (id: string) => {
         message: 'Category deleted successfully'
     };
 };
+
+export const fetchCategories = async () => {
+    const categories = await Category.find({});
+
+    return categories.map(category => ({
+        id: category._id,
+        name: category.name,
+        createdAt: category.createdAt,
+        updatedAt: category.updatedAt
+    }));
+}
