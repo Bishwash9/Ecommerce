@@ -73,7 +73,7 @@ export default  function Inventory() {
   return (
     <div className='space-y-6'>
 
-      <div className='gird-cols-1 lg:grid-cols-4 sm:grid-cols-2 gap-4 mb-6'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6'>
           <InventoryStatCard title='Total Products' value={stats.totalProducts} icon={<Sparkles size={20}/>} iconColor=''/>
           <InventoryStatCard title='Total Categories' value={stats.totalCategories} icon={<ChartColumnStacked size={20}/>} iconColor='' />
           <InventoryStatCard title='Out of Stock' value={stats.outOfStock} icon={<OctagonX size={20}/>} iconColor=''/>
@@ -90,7 +90,7 @@ export default  function Inventory() {
               ) : (
 
                 <InventoryContent
-                 categories={categories.map(cat => cat?.name || '') as any}
+                 categories={categories}
                  onAddCategory={handleAddCategory}
                  onEditCategory={handleEditCategory}
                  onDeleteCategory={handleDeleteCategory}
