@@ -110,7 +110,7 @@ export const InventoryContent = ({ categories, onAddCategory, onEditCategory, on
                         </tr>
                     </thead>
                     <tbody className='divide-y divide-gray-50'>
-                            {filteredCategories.map((category) => (
+                            {categories.map((category) => ( 
                                 <tr key={category.id} className='hover:bg-gray-50/50 transition-colors duration-300'>
                                     <td className='px-5 py-3 text-sm font-medium text-gray-600'>{category.name}</td>
                                     <td className='px-5 py-3 text-sm font-medium text-gray-600'>

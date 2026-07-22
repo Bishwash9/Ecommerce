@@ -5,6 +5,7 @@ import Dashboard from './Pages/Dashboard'
 import  { PublicRoute } from './Features/Auth/PublicRoute'
 import { RouteGuard } from './Guard/RouteGuard'
 import { DashboardLayout } from './Components/Layout/DashboardLayout'
+import Inventory from './Pages/Inventory'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
 
           <Route element={<RouteGuard/>}>
             <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/inventory' element={<Inventory/>} />
           </Route>
           
           </Route>

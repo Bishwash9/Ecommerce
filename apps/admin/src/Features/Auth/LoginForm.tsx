@@ -5,7 +5,7 @@ import { useAuth } from '../../Context/AuthContext';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginData } from '../../Schemas/auth.schema';
-import adminImage from '../assets/admin.png'; // Import the image
+import adminImage from '../../assets/admin.png'; // Import the image
 
 
 export const LoginForm = () => {

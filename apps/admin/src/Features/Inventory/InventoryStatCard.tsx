@@ -2,14 +2,14 @@ interface StatCardProps {
     title: string;
     value: string | number;
     icon: React.ReactNode;
-    iconBgColor?: string;
+    iconColor?: string;
     valueColor?: string;
 }
 
-export const InventoryStatCard: React.FC<StatCardProps> =({title,value,icon,iconBgColor,valueColor})=>{
+export const InventoryStatCard: React.FC<StatCardProps> =({title,value,icon,iconColor,valueColor})=>{
     return (
           <div className='bg-white rounded-md p-[1.5vw] border border-neutral-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]'>
-            <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconBgColor} transition-all`}>
+            <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconColor} transition-all`}>
                 {icon}
             </div>
             <div className='text-right flex-1 min-w-0'>
