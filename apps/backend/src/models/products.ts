@@ -45,7 +45,12 @@ const productsSchema = new Schema(
             {
                 type: String,
             },
-        ]
+        ],
+
+        isActive: {
+            type: Boolean,
+            default: true
+        }
     },
     {
         timestamps: true
