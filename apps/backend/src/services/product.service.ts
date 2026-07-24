@@ -11,7 +11,9 @@ export const getAllProducts = async () => {
         category: product.category,
         stock: product.stock,
         images: product.images,
-        isActive: product.isActive
+        isActive: product.isActive,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt
     }));
 };
 
