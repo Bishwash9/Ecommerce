@@ -24,6 +24,8 @@ export const createProductSchema = z.object({
 
     images: z.array(z.string().min(1)).optional(), // Optional array of image URLs
 
+    isActive: z.boolean().optional() // Optional boolean for product active status
+
 });
 
 export const editProductSchema = z.object({
@@ -41,4 +43,6 @@ export const editProductSchema = z.object({
         .min(1, "Product price must be a positive number"),
     
     images: z.array(z.string().min(1)).optional(), // Optional array of image URLs
-})
+
+    isActive: z.boolean().optional() // Optional boolean for product active status
+});
