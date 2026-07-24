@@ -1,7 +1,8 @@
 import { apiClient } from "../Config/api";
+import type { CreateCategoryRequest, EditCategoryRequest, Category } from "../Types/category";
 
 export const categoryService = {
-    createCategory: async (name: string): Promise<any> => {
+    createCategory: async (name: string): Promise<CreateCategoryRequest> => {
          
         const createData = await apiClient('/categories/create-category', {
             method: 'POST',
@@ -16,7 +17,7 @@ export const categoryService = {
         return createData.data;
     },
 
-    editCategory: async (id: string, name: string): Promise<any> => {
+    editCategory: async (id: string, name: string): Promise<EditCategoryRequest> => {
 
         const editData = await apiClient(`/categories/edit-category/${id}`, {
             method: 'PUT',
@@ -45,7 +46,7 @@ export const categoryService = {
         return deletData.data;
     },
 
-    fetchCategories: async(): Promise<any> => {
+    fetchCategories: async(): Promise<Category[]> => {
         const fetchData = await apiClient('/categories/fetch-categories', {
             method: 'GET',
         });

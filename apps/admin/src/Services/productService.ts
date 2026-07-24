@@ -1,8 +1,8 @@
 import {apiClient} from '../Config/api';
-
+import type { CreateProductRequest, EditProductRequest, Product } from '../Types/product';
 export const productService =  {
 
-    getAllProducts: async (): Promise<any> => {
+    getAllProducts: async (): Promise<Product[]> => {
         const getData = await apiClient('/fetch-products', {
             method: 'GET',
         });
@@ -15,8 +15,21 @@ export const productService =  {
         return getData.data;
     },
 
+    getProductById: async (id: string): Promise<Product> => {
+        const getData = await apiClient(`/fetch-product/${id}`, {
+            method: 'GET',
+        });
 
-    createProduct: async (name: string, description: string, price: number, stock: number, category: string, images: string[], isActive: boolean): Promise<any> => {
+        if(!getData.data) {
+            console.error('Failed to fetch product');
+            throw new Error('Failed to fetch product');
+        }
+
+        return getData.data;
+    },
+
+
+    createProduct: async (name: string, description: string, price: number, stock: number, category: string, images: string[], isActive: boolean): Promise<CreateProductRequest> => {
 
         const createData = await apiClient('/create-product', {
             method: 'POST',
@@ -32,7 +45,7 @@ export const productService =  {
         return createData.data;
     },
 
-    editProduct: async (id: string, name: string, description: string, price: number, stock: number, images: string[], isActive: boolean): Promise<any> => {
+    editProduct: async (id: string, name: string, description: string, price: number, stock: number, images: string[], isActive: boolean): Promise<EditProductRequest> => {
         
         const editData = await apiClient(`/edit-product/${id}`, {
             method: 'PUT',
