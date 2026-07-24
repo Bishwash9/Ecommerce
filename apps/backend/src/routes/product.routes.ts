@@ -10,3 +10,5 @@ router.get('/fetch-product/:id', getProductById);
 router.post('/create-product', validate(createProductSchema), createProduct);
 router.put('/edit-product/:id', validate(editProductSchema), editProduct);
 router.delete('/delete-product/:id', deleteProduct);
+
+export default router;
