@@ -7,6 +7,12 @@ export const categoryService = {
             method: 'POST',
             body: JSON.stringify({ name }),
         });
+
+        if(!createData.data) {
+            console.error('Failed to create category');
+            throw new Error('Failed to create category');
+        }
+
         return createData.data;
     },
 
@@ -16,6 +22,12 @@ export const categoryService = {
             method: 'PUT',
             body: JSON.stringify({name}),
         });
+
+        if(!editData.data) {
+            console.error('Failed to edit category');
+            throw new Error('Failed to edit category');
+        }
+
         return editData.data;
     },
 
@@ -24,6 +36,12 @@ export const categoryService = {
         const deletData = await apiClient(`/categories/delete-category/${id}`, {
             method: 'DELETE',
         });
+
+        if(!deletData.data) {
+            console.error('Failed to delete category');
+            throw new Error('Failed to delete category');
+        }
+
         return deletData.data;
     },
 
@@ -31,6 +49,12 @@ export const categoryService = {
         const fetchData = await apiClient('/categories/fetch-categories', {
             method: 'GET',
         });
+
+        if(!fetchData.data) {
+            console.error('Failed to fetch categories');
+            throw new Error('Failed to fetch categories');
+        }
+
         return fetchData.data;
     }
 };
