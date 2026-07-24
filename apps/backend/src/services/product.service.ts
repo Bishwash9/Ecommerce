@@ -54,4 +54,43 @@ export const createProduct = async (name: string, description: string, price: nu
     };
 };
 
-export const editProduct = 
+export const editProduct = async (id: string, name: string, description: string, price: number, stock: number, images: string[], isActive: boolean) => {
+    const productToEdit = await Products.findById(id);
+    if(!productToEdit){
+        throw new Error('Product not found');
+    }
+
+    productToEdit.name = name;
+    productToEdit.description = description;
+    productToEdit.price = price;
+    productToEdit.stock = stock;
+    productToEdit.images = images;
+    productToEdit.isActive = isActive;
+
+    await productToEdit.save();
+
+    return {
+        id: productToEdit._id,
+        name: productToEdit.name,
+        description: productToEdit.description,
+        price: productToEdit.price,
+        category: productToEdit.category,
+        stock: productToEdit.stock,
+        images: productToEdit.images,
+        isActive: productToEdit.isActive
+    };
+};
+
+export const deleteProduct = async (id: string) => {
+    const productToDelete = await Products.findById(id);
+    if(!productToDelete){
+        throw new Error('Product not found');
+    }
+
+    await productToDelete.deleteOne();
+
+    return {
+        message: 'Product deleted successfully'
+    };
+};
+
