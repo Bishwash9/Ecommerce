@@ -1,141 +1,259 @@
-import type { Category } from '../../Types/category';
-import { useInvetoryStore } from '../../Store/useInventoryStore';
-
-import { useAuth } from '../../Context/AuthContext';
-import { useEffect, useMemo, useState } from 'react';
-import { Box, Filter, PlusCircle, Search, Trash, Edit } from 'lucide-react'
+import type { Category } from "../../Types/category";
+import type { Product } from "../../Types/product";
+import {  useMemo, useState } from "react";
+import { Box, Filter, PlusCircle, Search, Trash, Edit } from "lucide-react";
 
 interface InventoryContentProps {
     categories: Category[];
     onAddCategory?: () => void;
     onEditCategory?: (category: Category) => void;
     onDeleteCategory?: (id: string) => void;
+    products: Product[];
+    onAddProduct?: () => void;
+    onEditProduct?: (product: Product) => void;
+    onDeleteProduct?: (id: string) => void;
 }
 
-export const InventoryContent = ({ categories, onAddCategory, onEditCategory, onDeleteCategory }: InventoryContentProps) => {
+export const InventoryContent = ({
+    categories,
+    onAddCategory,
+    onEditCategory,
+    onDeleteCategory,
+    products,
+    onAddProduct,
+    onEditProduct,
+    onDeleteProduct,
+}: InventoryContentProps) => {
 
-    const { user } = useAuth();
-    const { fetchCategories } = useInvetoryStore();
-
-    const [search, setSearch] = useState('');
-    const [filterCategories, setFilterCategories] = useState<string>('All');
+    const [searchCategory, setSearchCategory] = useState("");
+    const [searchProduct, setSearchProduct] = useState("");
+    const [filterCategories, setFilterCategories] = useState<string>("All");
+    const [filterProducts, setFilterProducts] = useState<string>("All");
 
     const filteredCategories = useMemo(() => {
         return categories.filter((category) => {
-            const matchesSearch = category.name.toLowerCase().includes(search.toLowerCase());
+            const matchesSearch = category.name
+                .toLowerCase()
+                .includes(searchCategory.toLowerCase());
 
-            const matchesFilter = filterCategories === 'All' || category.name === filterCategories;
+            const matchesFilter =
+                filterCategories === "All" || category.name === filterCategories;
 
             return matchesSearch && matchesFilter;
-        })
-    }, [categories, search, filterCategories]);
+        });
+    }, [categories, searchCategory, filterCategories]);
 
+    const filteredProducts = useMemo(() => {
+        return products.filter((product) => {
+            const matchesSearch = product.name.toLowerCase().includes(searchProduct.toLowerCase());
+            const matchesFilter = filterProducts === "All" || product.category === filterProducts;
+            return matchesSearch && matchesFilter;
+        });
+    }, [products, searchProduct, filterProducts]);
 
-
-    //on mount fetch categories
-    useEffect(() => {
-        if(!user) return;
-        fetchCategories();
-    }, [user, fetchCategories]);
-
-    
     return (
-        <div className='p-7 flex flex-col gap-6'>
-
-            <div className='flex items-center justify-between'>
-                <h2 className='text-lg font-semibold text-gray-800 flex items-center gap-2'><Box size={18} /> Inventory</h2>
-                {onAddCategory && (
-                    <button className='flex items-center gap-2 bg-[#4C3BC0] hover:bg-[#3b2da0] text-white text-xs px-4 py-2.5 rounded-lg transition-colors duration-300 cursor-pointer' onClick={onAddCategory}>
-                        <PlusCircle size={16} /> Add Category
-                    </button>
-                )}
-            </div>
-
-            
-
-            <div className='bg-white border border-gray-100 rounded-xl overflow-hidden'>
-                <table className='w-full'>
-                    <thead>
-                        <tr className='bg-gray-50/60 border-b border-gray-50'>
-                            <th className='text-left text-[11px] font-medium text-gray-400 px-5 py-3'>Product</th>
-                            <th className='text-left text-[11px] font-medium text-gray-400 px-5 py-3'>Category</th>
-                            <th className='text-left text-[11px] font-medium text-gray-400 px-5 py-3'>Price</th>
-                            <th className='text-left text-[11px] font-medium text-gray-400 px-5 py-3'>Stock</th>
-                            <th className='text-right text-[11px] font-medium text-gray-400 px-5 py-3'>Actions</th>
-                        </tr>
-
-                    </thead>
-                    <tbody className='divide-y divide-gray-50'>
-                            
-                    </tbody>
-
-                </table>
-
-            </div>
-                    
-            <div className='flex flex-col gap-3 border border-gray-200 rounded-xl p-3 bg-white w-100'>
-                <div className='flex items-center justify-between gap-4'>
-                <div className='relative w-full md:flex-1'>
-                    <Search className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400' size={18} />
-                    <input
-                    type='text'
-                    placeholder='Search categories...'
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className='w-full pl-10 pr-4 py-2.5 bg-gray-100 rounded-lg border border-gray-300 focus:border-[#4C3BC0] focus:outline-none text-sm text-gray-600 placeholder-gray-400 font-medium transition-colors'
-                    />
-
-                </div >
-                <div className='relative group shrink-0'>
-                    <div className='flex items-center justify-center w-10 h-10 bg-gray-50 border border-gray-300 rounded-lg text-gray-600 cursor-pointer transition-colors hover:bg-gray-100'>
-                        <Filter size={18} />
-
-                        <select 
-                        value={filterCategories}
-                        onChange={(e) => setFilterCategories(e.target.value)}
-                        className='absolute inset-0 w-full h-full opacity-0 cursor-pointer text-sm font-medium text-gray-600'
+        <div className="p-7 flex flex-col gap-6">
+            <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                    <Box size={18} /> Inventory
+                </h2>
+                <div className="flex items-center gap-2">
+                    {onAddCategory && (
+                        <button
+                            className="flex items-center gap-2 bg-[#4C3BC0] hover:bg-[#3b2da0] text-white text-xs px-4 py-2.5 rounded-lg transition-colors duration-300 cursor-pointer"
+                            onClick={onAddCategory}
                         >
-                            <option value='All'>All</option>
-                            {categories.map((category) => (
-                                <option key={category.id} value={category.name}>{category.name}</option>
-                            ))}
-                        </select>
+                            <PlusCircle size={16} /> Add Category
+                        </button>
+                    )}
+
+                    {onAddProduct && (
+                        <button
+                            className="flex items-center gap-2 bg-[#4C3BC0] hover:bg-[#3b2da0] text-white text-xs px-4 py-2.5 rounded-lg transition-colors duration-300 cursor-pointer"
+                            onClick={onAddProduct}
+                        >
+                            <PlusCircle size={16} /> Add Product
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            <div className="flex flex-col gap-3 border border-gray-200 rounded-xl p-3 bg-white ">
+                    <div className="flex items-center justify-between gap-4">
+                    <div className="relative w-full md:flex-1">
+                        <Search
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                            size={18}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Search Products..."
+                            value={searchProduct}
+                            onChange={(e) => setSearchProduct(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2.5 bg-gray-100 rounded-lg border border-gray-300 focus:border-[#4C3BC0] focus:outline-none text-sm text-gray-600 placeholder-gray-400 font-medium transition-colors"
+                        />
+                    </div>
+                    <div className="relative group shrink-0">
+                        <div className="flex items-center justify-center w-10 h-10 bg-gray-50 border border-gray-300 rounded-lg text-gray-600 cursor-pointer transition-colors hover:bg-gray-100">
+                            <Filter size={18} />
+
+                            <select
+                                value={filterProducts}
+                                onChange={(e) => setFilterProducts(e.target.value)}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer text-sm font-medium text-gray-600"
+                            >
+                                <option value="All">All</option>
+                                {products.map((product) => (
+                                    <option key={product.id} value={product.name}>
+                                        {product.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-            </div>
-
-            <div className='bg-white border border-gray-100 rounded-xl overflow-hidden'>
-                <table className='w-full'>
+            <div className="bg-white border border-gray-100 rounded-xl overflow-hidden">
+                
+                <table className="w-full">
                     <thead>
-                        <tr className='bg-gray-50/60 border-b border-gray-50'>
-                            <th className='text-left text-[11px] font-medium text-gray-400 px-5 py-3'>Category</th>
-                            <th className='text-right text-[11px] font-medium text-gray-400 px-5 py-3'>Actions</th>
+                        <tr className="bg-gray-50/60 border-b border-gray-50">
+                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                Product
+                            </th>
+                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                Category
+                            </th>
+                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                Price
+                            </th>
+                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                Stock
+                            </th>
+                            <th className="text-right text-[11px] font-medium text-gray-400 px-5 py-3">
+                                Actions
+                            </th>
                         </tr>
                     </thead>
-                    <tbody className='divide-y divide-gray-50'>
-                            {filteredCategories.map((category) => ( 
-                                <tr key={category.id} className='hover:bg-gray-50/50 transition-colors duration-300'>
-                                    <td className='px-5 py-3 text-sm font-medium text-gray-600'>{category.name}</td>
-                                    <td className='px-5 py-3 text-sm font-medium text-gray-600'>
-                                        <div className='flex items-center space-x-2'>
-                                            <button className='text-blue-500 hover:text-blue-700' onClick={() =>  onEditCategory?.(category)}>
+                    <tbody className="divide-y divide-gray-50">
+                        {filteredProducts.map((product) => (
+                            <tr key={product.id} className="hover:bg-gray-50/50 transition-colors duration-300">
+                                <td className='px-5 py-3 text-sm font-medium text-gray-600'>
+                                    {product.name}
+                                </td>
+                                <td className='px-5 py-3 text-sm font-medium text-gray-600'>
+                                    {product.category}
+                                </td>
+                                <td className='px-5 py-3 text-sm font-medium text-gray-600'>
+                                    {product.price}
+                                </td>
+                                <td className='px-5 py-3 text-sm font-medium text-gray-600'>
+                                    {product.stock}
+                                </td>
+                                 <td className="px-5 py-3 text-sm font-medium text-gray-600">
+                                        <div className="flex items-center space-x-2">
+                                            <button
+                                                className="text-blue-500 hover:text-blue-700"
+                                                onClick={() => onEditProduct?.(product)}
+                                            >
                                                 <Edit size={16} />
                                             </button>
-                                            <button className='text-red-500 hover:text-red-700' onClick={() => onDeleteCategory?.(category.id)}>
+                                            <button
+                                                className="text-red-500 hover:text-red-700"
+                                                onClick={() => onDeleteProduct?.(product.id)}
+                                            >
+                                                <Trash size={16} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+          
+            
+
+            <div className="flex flex-col gap-3 border border-gray-200 rounded-xl p-3 bg-white w-100">
+                <div className="flex items-center justify-between gap-4">
+                    <div className="relative w-full md:flex-1">
+                        <Search
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                            size={18}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Search categories..."
+                            value={searchCategory}
+                            onChange={(e) => setSearchCategory(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2.5 bg-gray-100 rounded-lg border border-gray-300 focus:border-[#4C3BC0] focus:outline-none text-sm text-gray-600 placeholder-gray-400 font-medium transition-colors"
+                        />
+                    </div>
+                    <div className="relative group shrink-0">
+                        <div className="flex items-center justify-center w-10 h-10 bg-gray-50 border border-gray-300 rounded-lg text-gray-600 cursor-pointer transition-colors hover:bg-gray-100">
+                            <Filter size={18} />
+
+                            <select
+                                value={filterCategories}
+                                onChange={(e) => setFilterCategories(e.target.value)}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer text-sm font-medium text-gray-600"
+                            >
+                                <option value="All">All</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.name}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white border border-gray-100 rounded-xl overflow-hidden">
+                    <table className="w-full">
+                        <thead>
+                            <tr className="bg-gray-50/60 border-b border-gray-50">
+                                <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Category
+                                </th>
+                                <th className="text-right text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-50">
+                            {filteredCategories.map((category) => (
+                                <tr
+                                    key={category.id}
+                                    className="hover:bg-gray-50/50 transition-colors duration-300"
+                                >
+                                    <td className="px-5 py-3 text-sm font-medium text-gray-600">
+                                        {category.name}
+                                    </td>
+                                    <td className="px-5 py-3 text-sm font-medium text-gray-600">
+                                        <div className="flex items-center space-x-2">
+                                            <button
+                                                className="text-blue-500 hover:text-blue-700"
+                                                onClick={() => onEditCategory?.(category)}
+                                            >
+                                                <Edit size={16} />
+                                            </button>
+                                            <button
+                                                className="text-red-500 hover:text-red-700"
+                                                onClick={() => onDeleteCategory?.(category.id)}
+                                            >
                                                 <Trash size={16} />
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
                             ))}
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-            </div>
-            
         </div>
-    )
-
-}
+    );
+};

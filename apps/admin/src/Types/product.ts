@@ -12,6 +12,7 @@ export interface Product {
 }
 
 export interface CreateProductRequest {
+    id: string;
     name: string;
     description: string;
     price: number;
@@ -19,6 +20,8 @@ export interface CreateProductRequest {
     stock: number;
     images: string[];
     isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface EditProductRequest {

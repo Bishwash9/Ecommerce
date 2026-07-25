@@ -3,7 +3,7 @@ import type { CreateProductRequest, EditProductRequest, Product } from '../Types
 export const productService =  {
 
     getAllProducts: async (): Promise<Product[]> => {
-        const getData = await apiClient('/fetch-products', {
+        const getData = await apiClient('/products/fetch-products', {
             method: 'GET',
         });
 
@@ -16,7 +16,7 @@ export const productService =  {
     },
 
     getProductById: async (id: string): Promise<Product> => {
-        const getData = await apiClient(`/fetch-product/${id}`, {
+        const getData = await apiClient(`/products/fetch-product/${id}`, {
             method: 'GET',
         });
 
@@ -31,7 +31,7 @@ export const productService =  {
 
     createProduct: async (name: string, description: string, price: number, stock: number, category: string, images: string[], isActive: boolean): Promise<CreateProductRequest> => {
 
-        const createData = await apiClient('/create-product', {
+        const createData = await apiClient('/products/create-product', {
             method: 'POST',
             body: JSON.stringify({name, description, price, stock, category, images, isActive}),
 
@@ -47,7 +47,7 @@ export const productService =  {
 
     editProduct: async (id: string, name: string, description: string, price: number, stock: number, images: string[], isActive: boolean): Promise<EditProductRequest> => {
         
-        const editData = await apiClient(`/edit-product/${id}`, {
+        const editData = await apiClient(`/products/edit-product/${id}`, {
             method: 'PUT',
             body: JSON.stringify({name, description, price, stock, images, isActive}),
         });
@@ -62,7 +62,7 @@ export const productService =  {
     },
 
     deleteProduct: async (id: string): Promise<any> => {
-        const deleteData = await apiClient(`/delete-product/${id}`, {
+        const deleteData = await apiClient(`/products/delete-product/${id}`, {
             method: 'DELETE',
         });
 
