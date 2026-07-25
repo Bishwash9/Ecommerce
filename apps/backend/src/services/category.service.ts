@@ -14,7 +14,7 @@ export const createCategory = async (name: string) => {
     await newCategory.save();
 
     return {
-        id: newCategory._id,
+        id: newCategory._id.toString(),
         name: newCategory.name
     };
 };
@@ -30,7 +30,7 @@ export const editCategory = async (id: string, name: string) => {
     await categoryToEdit.save();
 
     return {
-        id: categoryToEdit._id,
+        id: categoryToEdit._id.toString(),
         name: categoryToEdit.name
     };
 };

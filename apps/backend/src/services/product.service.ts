@@ -1,14 +1,18 @@
 import { Products } from '../models/products.js'
 
 export const getAllProducts = async () => {
-    const getProducts = await Products.find({});
+    const getProducts = await Products.find({}).populate({
+        path: 'category',
+        select: 'name'
+    });
 
     return getProducts.map(product => ({
         id: product._id,
         name: product.name,
         description: product.description,
         price: product.price,
-        category: product.category,
+        categoryId: product.category?._id,
+        categoryName: product.category?.name,
         stock: product.stock,
         images: product.images,
         isActive: product.isActive,
