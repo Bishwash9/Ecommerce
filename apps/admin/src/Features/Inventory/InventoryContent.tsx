@@ -46,7 +46,7 @@ export const InventoryContent = ({
     const filteredProducts = useMemo(() => {
         return products.filter((product) => {
             const matchesSearch = product.name.toLowerCase().includes(searchProduct.toLowerCase());
-            const matchesFilter = filterProducts === "All" || product.category === filterProducts;
+            const matchesFilter = filterProducts === "All" || product.categoryName === filterProducts
             return matchesSearch && matchesFilter;
         });
     }, [products, searchProduct, filterProducts]);
@@ -142,7 +142,7 @@ export const InventoryContent = ({
                                     {product.name}
                                 </td>
                                 <td className='px-5 py-3 text-sm font-medium text-gray-600'>
-                                    {product.category}
+                                    {product.categoryName}
                                 </td>
                                 <td className='px-5 py-3 text-sm font-medium text-gray-600'>
                                     {product.price}
@@ -151,7 +151,7 @@ export const InventoryContent = ({
                                     {product.stock}
                                 </td>
                                  <td className="px-5 py-3 text-sm font-medium text-gray-600">
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center space-x-2 justify-end">
                                             <button
                                                 className="text-blue-500 hover:text-blue-700"
                                                 onClick={() => onEditProduct?.(product)}
@@ -233,7 +233,7 @@ export const InventoryContent = ({
                                         {category.name}
                                     </td>
                                     <td className="px-5 py-3 text-sm font-medium text-gray-600">
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center space-x-2 justify-end">
                                             <button
                                                 className="text-blue-500 hover:text-blue-700"
                                                 onClick={() => onEditCategory?.(category)}

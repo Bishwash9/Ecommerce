@@ -3,7 +3,8 @@ export interface Product {
     name: string;
     description: string;
     price: number;
-    category: string;
+    categoryName: string;
+    categoryId: string;
     stock: number;
     images: string[];
     isActive: boolean;
@@ -16,7 +17,8 @@ export interface CreateProductRequest {
     name: string;
     description: string;
     price: number;
-    category: string;
+    categoryName: string;
+    categoryId: string;
     stock: number;
     images: string[];
     isActive: boolean;

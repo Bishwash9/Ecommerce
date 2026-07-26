@@ -226,7 +226,7 @@ const ProductForm = ({
                 <div>
                     <label className="block text-xs font-medium text-gray-500 mb-1">Category</label>
                     <select
-                        value={editingProduct.category}
+                        value={editingProduct.categoryId}
                         disabled
                         className='w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-100 cursor-not-allowed'
                     >
