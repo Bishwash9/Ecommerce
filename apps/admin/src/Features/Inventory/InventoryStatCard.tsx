@@ -8,7 +8,7 @@ interface StatCardProps {
 
 export const InventoryStatCard: React.FC<StatCardProps> =({title,value,icon,iconColor,valueColor})=>{
     return (
-          <div className='bg-white rounded-md p-[1.5vw] border border-neutral-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]'>
+          <div className='bg-white rounded-xl p-[1.5vw] border border-neutral-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]'>
             <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconColor} transition-all`}>
                 {icon}
             </div>

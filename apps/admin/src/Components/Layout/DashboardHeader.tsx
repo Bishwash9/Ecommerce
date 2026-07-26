@@ -29,6 +29,12 @@ export default function DashboardHeader({initials=''}: {initials?: string}) {
 
     return (
        <header className='h-16 flex items-center justify-end px-4 sm:px-6 lg:px-8 sticky top-3 mx-4 z-40 bg-white border border-slate-200 rounded-2xl shadow-sm'>
+        <div className='flex items-center justify-between w-full'>
+
+            <div>
+                <h2 className='text-lg font-bold text-indigo-500 uppercase '>Admin Panel</h2>
+            </div>
+        
             <div className='relative flex items-center gap-2 sm:gap-4' ref={profileRef}>
                 <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -54,6 +60,7 @@ export default function DashboardHeader({initials=''}: {initials?: string}) {
                     </div>
                 )}
             </div>
+        </div>
        </header>
     )
 
