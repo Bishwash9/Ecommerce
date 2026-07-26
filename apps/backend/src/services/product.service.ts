@@ -1,7 +1,11 @@
 import { Products } from '../models/products.js'
+import type { ICategory } from '../models/products.js'
+
+
 
 export const getAllProducts = async () => {
-    const getProducts = await Products.find({}).populate({
+
+    const getProducts = await Products.find({}).populate<{category: ICategory}>({
         path: 'category',
         select: 'name'
     });
@@ -22,11 +26,28 @@ export const getAllProducts = async () => {
 };
 
 export const getProductById = async (id: string) => {
-    const uniqueProduct = await Products.findById(id);
+    const uniqueProduct = await Products.findById(id).populate<{category: ICategory}>({
+        path: 'category',
+        select: 'name'
+    });
+    
     if (!uniqueProduct) {
         throw new Error('Product not found');
     }
-    return uniqueProduct;
+    
+    return {
+        id: uniqueProduct._id,
+        name: uniqueProduct.name,
+        description: uniqueProduct.description,
+        price: uniqueProduct.price,
+        categoryId: uniqueProduct.category?._id,
+        categoryName: uniqueProduct.category?.name,
+        stock: uniqueProduct.stock,
+        images: uniqueProduct.images,
+        isActive: uniqueProduct.isActive,
+        createdAt: uniqueProduct.createdAt,
+        updatedAt: uniqueProduct.updatedAt
+    };
 };
 
 

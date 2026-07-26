@@ -1,7 +1,26 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 const {Schema} = mongoose;
 
-const productsSchema = new Schema( 
+//define the shape of populated category
+export interface ICategory {
+    _id: mongoose.Types.ObjectId;
+    name: string;
+}
+
+interface IProduct {
+  _id: Types.ObjectId;
+  name: string;
+  description: string;
+  price: number;
+  category: Types.ObjectId | ICategory; // can be either before/after populate
+  stock: number;
+  images: string[];
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const productsSchema = new Schema<IProduct>( 
     {
         name: {
             type: String,
