@@ -130,6 +130,9 @@ export const InventoryContent = ({
                             <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
                                 Stock
                             </th>
+                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                Image
+                            </th>
                             <th className="text-right text-[11px] font-medium text-gray-400 px-5 py-3">
                                 Actions
                             </th>
@@ -149,6 +152,23 @@ export const InventoryContent = ({
                                 </td>
                                 <td className='px-5 py-3 text-sm font-medium text-gray-600'>
                                     {product.stock}
+                                </td>
+                                <td className='px-5 py-3'>
+                                  <div className='flex gap-2'>
+                                        {product.images?.slice(0,1).map((imageUrl,index) => (
+                                            <img
+                                            key={`${imageUrl}-${index}`}
+                                            src={imageUrl}
+                                            alt={product.name}
+                                            className="w-10 h-10 object-cover rounded-md"
+                                            />
+                                        ))}
+
+                                         {!product.images?.length && (
+                                            <span className="text-xs text-gray-400">No image</span>
+                                        )}
+
+                                  </div>
                                 </td>
                                  <td className="px-5 py-3 text-sm font-medium text-gray-600">
                                         <div className="flex items-center space-x-2 justify-end">

@@ -2,14 +2,15 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5001/
 
 export const apiClient = async (endpoint: string, options: RequestInit = {}): Promise<any> => {
     const token = localStorage.getItem('accessToken');
+    
+    const headers = new Headers(options.headers);
 
-    const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-        ...((options.headers as Record<string, string>) || {}),
-    };
+    if(!(options.body instanceof FormData)) {
+        headers.set('Content-Type', 'application/json');
+    }
 
     if (token && !endpoint.includes('login') && !endpoint.includes('register')) {
-        headers.Authorization = `Bearer ${token}`;
+        headers.set('Authorization', `Bearer ${token}`);
     }
 
     //force credentials to include http only cookies for refresh token
@@ -46,7 +47,7 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}): Pr
                     localStorage.setItem('accessToken', newAccessToken);
 
                     //update the authorizatoin header
-                    headers.Authorization = `Bearer ${newAccessToken}`;
+                    headers.set('Authorization', `Bearer ${newAccessToken}`);
 
                     //retry original request with new access token
                     const retryResponse = await fetch(url, { ...fetchOptions, headers });

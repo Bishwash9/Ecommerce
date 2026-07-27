@@ -72,6 +72,26 @@ export const productService =  {
         }
 
         return deleteData.data;
+    },
+
+    uploadProductImages: async (files: File[]): Promise<string[]> => {
+        const formData = new FormData();
+
+        files.forEach((file) => {
+            formData.append('images', file);
+        });
+
+        const response = await apiClient('/products/upload-images', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if(!response.data) {
+            console.error('Failed to upload images');
+            throw new Error('Failed to upload images');
+        }
+
+        return response.data.images; // Assuming the response contains an array of image URLs
     }
 
     

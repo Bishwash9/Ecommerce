@@ -9,7 +9,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { categorySchema, type CategoryData } from '../../Schemas/category.schema';
 import { addProductSchema, editProductSchema, type AddProductData, type EditProductData } from '../../Schemas/product.schema';
 import { X } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+const [imageFile, setImageFile] = useState<File[]>([]);
 
 
 interface InventoryModalProps {
@@ -145,7 +147,11 @@ const ProductForm = ({
         });
     }, [editingProduct, reset]);
 
+
+
     const onSubmit = async (data: AddProductFormValues | EditProductFormValues) => {
+        const imageUrls = imageFile.length ? await productService.uploadProductImages(imageFile): data.images ?? []
+
         if (editingProduct) {
             const editProductData = data as EditProductFormValues;
             const updatedProduct = await productService.editProduct(
@@ -154,7 +160,7 @@ const ProductForm = ({
                 editProductData.description as string,
                 editProductData.price,
                 editProductData.stock,
-                editProductData.images as string[],
+                imageUrls,
                 editProductData.isActive,
             );
 
@@ -163,6 +169,8 @@ const ProductForm = ({
             return;
         }
 
+        
+
         const addProductData = data as AddProductFormValues;
         const newProduct = await productService.createProduct(
             addProductData.name,
@@ -170,7 +178,7 @@ const ProductForm = ({
             addProductData.price,
             addProductData.stock,
             addProductData.categoryId,
-            addProductData.images as string[],
+            imageUrls,
             addProductData.isActive,
         );
 
@@ -255,11 +263,20 @@ const ProductForm = ({
             <div>
                 <label className='block text-xs font-medium text-gray-500 mb-1'>Images</label>
                 <input
-                    type='text'
-                    placeholder='Paste image URL'
-                    {...register('images.0')}
-                    className='w-full px-3 py-2 border border-gray-200 rounded-lg text-sm'
+                type='file'
+                multiple
+                accept='image/jpeg,image/png,image/webp'
+                onChange={(event) => {
+                    setImageFile(Array.from(event.target.files ?? []));
+                }}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
                 />
+
+                {imageFile.map((file) => (
+                    <p key={`${file.name}-${file.lastModified}`} className='text-xs text-gray-500'>
+                        {file.name}
+                    </p>
+                ))}
             </div>
 
             <div className='flex items-center gap-2'>
