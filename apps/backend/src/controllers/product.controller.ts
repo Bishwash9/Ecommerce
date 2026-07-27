@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import * as productService from '../services/product.service.js';
+import { uploadImage } from '../config/cloudinary.js'
 
 export const getAllProducts = async (req: Request, res: Response) => {
     try {
@@ -107,3 +108,30 @@ export const deleteProduct = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const uploadImages = async (req: Request, res: Response) => {
+    try {
+        const files = req.files as Express.Multer.File[];
+
+        if(!files?.length){
+            return res.status(400).json({
+                message: 'Select at least one image to upload'
+            });
+        }
+
+        const imageUrls = await Promise.all(
+            files.map((file) => uploadImage(file.buffer))
+        );
+
+        return res.status(201).json({
+            success: true,
+            data: {
+                images: imageUrls,
+            },
+        });
+    }catch(error) {
+        return res.status(500).json({
+            message: error instanceof Error ? error.message : 'Failed to upload images'
+        });
+    }
+}
