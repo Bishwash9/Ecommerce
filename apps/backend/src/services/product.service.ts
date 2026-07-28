@@ -69,16 +69,28 @@ export const createProduct = async (name: string, description: string, price: nu
 
     await newProduct.save();
     
+    const populatedProduct = await Products.findById(newProduct._id).populate<{category: ICategory}>({
+        path: 'category',
+        select: 'name'
+    });
+
+    if(!populatedProduct) {
+        throw new Error('Created product not found after saving');
+    }
+
     return {
-        id: newProduct._id,
-        name: newProduct.name,
-        description: newProduct.description,
-        price: newProduct.price,
-        category: newProduct.category,
-        stock: newProduct.stock,
-        images: newProduct.images,
-        isActive: newProduct.isActive
-    };
+        id: populatedProduct._id,
+        name: populatedProduct.name,
+        description: populatedProduct.description,
+        price: populatedProduct.price,
+        categoryId: populatedProduct.category?._id,
+        categoryName: populatedProduct.category?.name,
+        stock: populatedProduct.stock,
+        images: populatedProduct.images,
+        isActive: populatedProduct.isActive,
+        createdAt: populatedProduct.createdAt,
+        updatedAt: populatedProduct.updatedAt
+    }
 };
 
 export const editProduct = async (id: string, name: string, description: string, price: number, stock: number, images: string[], isActive: boolean) => {
