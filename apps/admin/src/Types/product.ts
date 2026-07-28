@@ -6,6 +6,7 @@ export interface Product {
     categoryName: string;
     categoryId: string;
     stock: number;
+    inStock: boolean;
     images: string[];
     isActive: boolean;
     createdAt: Date;
@@ -32,6 +33,7 @@ export interface EditProductRequest {
     description: string;
     price: number;
     stock: number;
+    inStock: boolean;
     images: string[];
     isActive: boolean;
 }

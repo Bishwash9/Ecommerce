@@ -1,6 +1,6 @@
 import type { Category } from "../../Types/category";
 import type { Product } from "../../Types/product";
-import {  useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Box, Filter, PlusCircle, Search, Trash, Edit } from "lucide-react";
 
 interface InventoryContentProps {
@@ -79,7 +79,7 @@ export const InventoryContent = ({
             </div>
 
             <div className="flex flex-col gap-3 border border-gray-200 rounded-xl p-3 bg-white ">
-                    <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center justify-between gap-4">
                     <div className="relative w-full md:flex-1">
                         <Search
                             className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -113,64 +113,83 @@ export const InventoryContent = ({
                     </div>
                 </div>
 
-            <div className="bg-white border border-gray-100 rounded-xl overflow-hidden">
-                
-                <table className="w-full">
-                    <thead>
-                        <tr className="bg-gray-50/60 border-b border-gray-50">
-                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
-                                Product
-                            </th>
-                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
-                                Category
-                            </th>
-                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
-                                Price
-                            </th>
-                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
-                                Stock
-                            </th>
-                            <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
-                                Image
-                            </th>
-                            <th className="text-right text-[11px] font-medium text-gray-400 px-5 py-3">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-50">
-                        {filteredProducts.map((product) => (
-                            <tr key={product.id} className="hover:bg-gray-50/50 transition-colors duration-300">
-                                <td className='px-5 py-3 text-sm font-medium text-gray-600'>
-                                    {product.name}
-                                </td>
-                                <td className='px-5 py-3 text-sm font-medium text-gray-600'>
-                                    {product.categoryName}
-                                </td>
-                                <td className='px-5 py-3 text-sm font-medium text-gray-600'>
-                                    {product.price}
-                                </td>
-                                <td className='px-5 py-3 text-sm font-medium text-gray-600'>
-                                    {product.stock}
-                                </td>
-                                <td className='px-5 py-3'>
-                                  <div className='flex gap-2'>
-                                        {product.images?.slice(0,1).map((imageUrl,index) => (
-                                            <img
-                                            key={`${imageUrl}-${index}`}
-                                            src={imageUrl}
-                                            alt={product.name}
-                                            className="w-10 h-10 object-cover rounded-md"
+                <div className="bg-white border border-gray-100 rounded-xl overflow-hidden">
+
+                    <table className="w-full">
+                        <thead>
+                            <tr className="bg-gray-50/60 border-b border-gray-50">
+                                <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Product
+                                </th>
+                                <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Category
+                                </th>
+                                <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Price
+                                </th>
+                                <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Stock
+                                </th>
+                                <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Status
+                                </th>
+                                <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Image
+                                </th>
+                                <th className="text-right text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-50">
+                            {filteredProducts.map((product) => (
+                                <tr key={product.id} className="hover:bg-gray-50/50 transition-colors duration-300">
+                                    <td className="px-5 py-3 text-sm font-medium text-gray-700">
+                                        {product.name}
+                                    </td>
+                                    <td className='px-5 py-3 text-sm font-medium text-gray-600'>
+                                        {product.categoryName}
+                                    </td>
+                                    <td className='px-5 py-3 text-sm font-medium text-gray-600'>
+                                        {product.price}
+                                    </td>
+                                    <td className='px-5 py-3 text-sm font-medium text-gray-600'>
+                                        {product.stock}
+                                    </td>
+                                    <td className='px-5 py-3'>
+                                        <span
+                                            className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 ring-inset ${
+                                                product.inStock
+                                                    ? 'bg-emerald-50 text-emerald-700 ring-emerald-200'
+                                                    : 'bg-rose-50 text-rose-700 ring-rose-200'
+                                            }`}
+                                        >
+                                            <span
+                                                className={`h-1.5 w-1.5 rounded-full ${
+                                                    product.inStock ? 'bg-emerald-500' : 'bg-rose-500'
+                                                }`}
                                             />
-                                        ))}
+                                            {product.inStock ? 'In stock' : 'Out of stock'}
+                                        </span>
+                                    </td>
+                                    <td className='px-5 py-3'>
+                                        <div className='flex gap-2'>
+                                            {product.images?.slice(0, 1).map((imageUrl, index) => (
+                                                <img
+                                                    key={`${imageUrl}-${index}`}
+                                                    src={imageUrl}
+                                                    alt={product.name}
+                                                    className="w-10 h-10 object-cover rounded-md"
+                                                />
+                                            ))}
 
-                                         {!product.images?.length && (
-                                            <span className="text-xs text-gray-400">No image</span>
-                                        )}
+                                            {!product.images?.length && (
+                                                <span className="text-xs text-gray-400">No image</span>
+                                            )}
 
-                                  </div>
-                                </td>
-                                 <td className="px-5 py-3 text-sm font-medium text-gray-600">
+                                        </div>
+                                    </td>
+                                    <td className="px-5 py-3 text-sm font-medium text-gray-600">
                                         <div className="flex items-center space-x-2 justify-end">
                                             <button
                                                 className="text-blue-500 hover:text-blue-700"
@@ -186,15 +205,15 @@ export const InventoryContent = ({
                                             </button>
                                         </div>
                                     </td>
-                                
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            </div>
-          
-            
+
+
 
             <div className="flex flex-col gap-3 border border-gray-200 rounded-xl p-3 bg-white w-100">
                 <div className="flex items-center justify-between gap-4">

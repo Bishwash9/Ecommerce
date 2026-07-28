@@ -94,9 +94,9 @@ export default function Inventory() {
 
   //stats
   const stats = {
-    totalProducts: 0,
+    totalProducts: products.length,
     totalCategories: categories.length,
-    outOfStock: 0,
+    outOfStock: products.filter((product) => !product.inStock).length,
   }
 
 

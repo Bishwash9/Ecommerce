@@ -1,5 +1,5 @@
 import {apiClient} from '../Config/api';
-import type { CreateProductRequest, EditProductRequest, Product } from '../Types/product';
+import type { EditProductRequest, Product } from '../Types/product';
 export const productService =  {
 
     getAllProducts: async (): Promise<Product[]> => {
@@ -29,7 +29,7 @@ export const productService =  {
     },
 
 
-    createProduct: async (name: string, description: string, price: number, stock: number, category: string, images: string[], isActive: boolean): Promise<CreateProductRequest> => {
+    createProduct: async (name: string, description: string, price: number, stock: number, category: string, images: string[], isActive: boolean): Promise<Product> => {
 
         const createData = await apiClient('/products/create-product', {
             method: 'POST',
