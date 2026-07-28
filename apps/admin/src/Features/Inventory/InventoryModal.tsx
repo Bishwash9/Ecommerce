@@ -11,7 +11,7 @@ import { addProductSchema, editProductSchema, type AddProductData, type EditProd
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const [imageFile, setImageFile] = useState<File[]>([]);
+
 
 
 interface InventoryModalProps {
@@ -93,7 +93,7 @@ const ProductForm = ({
     onSuccess: () => void;
 }) => {
     const { addProduct, editProduct, categories } = useInvetoryStore();
-
+    const [imageFile, setImageFile] = useState<File[]>([]);
     const isEditingProduct = Boolean(editingProduct);
 
     const {
@@ -263,17 +263,27 @@ const ProductForm = ({
             <div>
                 <label className='block text-xs font-medium text-gray-500 mb-1'>Images</label>
                 <input
-                type='file'
-                multiple
-                accept='image/jpeg,image/png,image/webp'
-                onChange={(event) => {
-                    setImageFile(Array.from(event.target.files ?? []));
-                }}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                    id='product-images'
+                    type='file'
+                    multiple
+                    accept='image/jpeg,image/png,image/webp'
+                    onChange={(event) => {
+                        setImageFile(Array.from(event.target.files ?? []));
+                    }}
+                    className='hidden'
                 />
 
+                <label
+                    htmlFor='product-images'
+                    className='flex w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-gray-300 px-3 py-3 text-sm font-medium text-gray-600 transition-colors hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-600'
+                >
+                    {imageFile.length
+                        ? `${imageFile.length} ${imageFile.length === 1 ? 'image' : 'images'} selected`
+                        : 'Choose product images'}
+                </label>
+
                 {imageFile.map((file) => (
-                    <p key={`${file.name}-${file.lastModified}`} className='text-xs text-gray-500'>
+                    <p key={`${file.name}-${file.lastModified}`} className='mt-1 text-xs text-gray-500'>
                         {file.name}
                     </p>
                 ))}
