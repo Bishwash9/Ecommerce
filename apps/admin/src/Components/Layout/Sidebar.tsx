@@ -3,15 +3,18 @@ import { authService } from '../../Services/authService';
 import { useState } from 'react';
 import { SidebarItems } from './SidebarItems';
 import { LogOut } from 'lucide-react';
+import { useAuth } from '../../Context/AuthContext';
 
 export function Sidebar({onClose}: {onClose?: () => void}) {
 
     const navigate = useNavigate();
-
+    const { logout } = useAuth();
     //handler for logout 
     const handleLogout = () => {
         authService.logout();
+        logout();
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
         navigate('/');
     };
 

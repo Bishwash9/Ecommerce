@@ -26,6 +26,7 @@ export const authService = {
     logout: async (): Promise<any> => {
         //remove the access token from local storage
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
         //remove the refresh token from the cookie
         await apiClient('/users/logout', {
             method: 'POST',

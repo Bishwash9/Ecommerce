@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { authService } from "../../Services/authService";
 import { LogOut, User } from "lucide-react";
+import { useAuth } from "../../Context/AuthContext";
 
 
 
@@ -9,6 +10,7 @@ export default function DashboardHeader({initials=''}: {initials?: string}) {
 
     const profileRef = useRef<HTMLDivElement>(null);
     
+    const { logout } = useAuth();
 
     useEffect(() => {
              const handleClickOutside = (event: MouseEvent) => {
@@ -23,7 +25,9 @@ export default function DashboardHeader({initials=''}: {initials?: string}) {
 
     const handleLogout = () => {
         authService.logout();
+        logout();
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
         window.location.href = '/';
     }
 
