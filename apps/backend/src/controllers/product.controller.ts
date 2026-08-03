@@ -45,7 +45,9 @@ export const createProduct = async (req: Request, res: Response) => {
             req.body.category,
             req.body.stock,
             req.body.images,
-            req.body.isActive
+            req.body.isActive,
+            req.body.brand,
+            req.body.tags
         );
 
         res.status(201).json({
@@ -74,7 +76,9 @@ export const editProduct = async (req: Request, res: Response) => {
             req.body.price,
             req.body.stock,
             req.body.images,
-            req.body.isActive
+            req.body.isActive,
+            req.body.brand,
+            req.body.tags,
         );
 
         res.status(200).json({

@@ -16,6 +16,8 @@ interface IProduct {
   stock: number;
   images: string[];
   isActive: boolean;
+  brand: string;
+  tags: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -69,7 +71,19 @@ const productsSchema = new Schema<IProduct>(
         isActive: {
             type: Boolean,
             default: true
-        }
+        },
+        
+        brand: {
+            type: String,
+            required: true,
+            trim: true,
+            index: true,
+        },
+        tags: [{
+            type: String,
+            trim: true,
+            lowercase: true,
+        }]
     },
     {
         timestamps: true

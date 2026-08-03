@@ -21,6 +21,8 @@ export const getAllProducts = async () => {
         inStock: product.stock > 0,
         images: product.images,
         isActive: product.isActive,
+        brand: product.brand,
+        tags: product.tags,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt
     }));
@@ -47,13 +49,16 @@ export const getProductById = async (id: string) => {
         inStock: uniqueProduct.stock > 0,
         images: uniqueProduct.images,
         isActive: uniqueProduct.isActive,
+        brand: uniqueProduct.brand,
+        tags: uniqueProduct.tags,
         createdAt: uniqueProduct.createdAt,
         updatedAt: uniqueProduct.updatedAt
     };
 };
 
 
-export const createProduct = async (name: string, description: string, price: number, category: string, stock: number, images: string[], isActive: boolean) => {
+
+export const createProduct = async (name: string, description: string, price: number, category: string, stock: number, images: string[], isActive: boolean, brand: string, tags: string[]) => {
     const existingProduct = await Products.findOne({name});
     if(existingProduct){
         throw new Error('Product already exists');
@@ -66,6 +71,8 @@ export const createProduct = async (name: string, description: string, price: nu
         category,
         stock,
         images,
+        brand,
+        tags,
         isActive
     });
 
@@ -90,13 +97,15 @@ export const createProduct = async (name: string, description: string, price: nu
         stock: populatedProduct.stock,
         inStock: populatedProduct.stock > 0,
         images: populatedProduct.images,
+        brand: populatedProduct.brand,
+        tags: populatedProduct.tags,
         isActive: populatedProduct.isActive,
         createdAt: populatedProduct.createdAt,
         updatedAt: populatedProduct.updatedAt
     }
 };
 
-export const editProduct = async (id: string, name: string, description: string, price: number, stock: number, images: string[], isActive: boolean) => {
+export const editProduct = async (id: string, name: string, description: string, price: number, stock: number, images: string[], isActive: boolean, brand: string, tags: string[]) => {
     const productToEdit = await Products.findById(id);
     if(!productToEdit){
         throw new Error('Product not found');
@@ -108,6 +117,8 @@ export const editProduct = async (id: string, name: string, description: string,
     productToEdit.stock = stock;
     productToEdit.images = images;
     productToEdit.isActive = isActive;
+    productToEdit.brand = brand;
+    productToEdit.tags = tags;
 
     await productToEdit.save();
 
@@ -120,7 +131,10 @@ export const editProduct = async (id: string, name: string, description: string,
         stock: productToEdit.stock,
         inStock: productToEdit.stock > 0,
         images: productToEdit.images,
-        isActive: productToEdit.isActive
+        isActive: productToEdit.isActive,
+        brand: productToEdit.brand,
+        tags: productToEdit.tags,
+        
     };
 };
 
