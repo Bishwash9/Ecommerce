@@ -121,7 +121,7 @@ export const InventoryContent = ({
 
                 <div className="overflow-x-auto rounded-xl border border-gray-100 bg-white">
 
-                    <table className="w-full min-w-[920px]">
+                    <table className="w-full min-w-260">
                         <thead>
                             <tr className="bg-gray-50/60 border-b border-gray-50">
                                 <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
@@ -129,6 +129,9 @@ export const InventoryContent = ({
                                 </th>
                                 <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
                                     Brand
+                                </th>
+                                <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Tags
                                 </th>
                                 <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
                                     Category
@@ -155,7 +158,12 @@ export const InventoryContent = ({
                                 <tr key={product.id} className="hover:bg-gray-50/50 transition-colors duration-300">
                                     <td className="px-5 py-3">
                                         <div className='text-sm font-medium text-gray-700'>{product.name}</div>
-                                        <div className='mt-1 flex flex-wrap items-center gap-1'>
+                                    </td>
+                                    <td className='px-5 py-3 text-sm font-medium text-gray-600'>
+                                        {product.brand || '—'}
+                                    </td>
+                                    <td className='px-5 py-3'>
+                                        <div className='flex flex-wrap items-center gap-1'>
                                             {(product.tags ?? []).slice(0, 2).map((tag, index) => (
                                                 <span
                                                     key={`${tag}-${index}`}
@@ -169,10 +177,10 @@ export const InventoryContent = ({
                                                     +{product.tags.length - 2}
                                                 </span>
                                             )}
+                                            {!product.tags?.length && (
+                                                <span className='text-xs text-gray-400'>—</span>
+                                            )}
                                         </div>
-                                    </td>
-                                    <td className='px-5 py-3 text-sm font-medium text-gray-600'>
-                                        {product.brand || '—'}
                                     </td>
                                     <td className='px-5 py-3 text-sm font-medium text-gray-600'>
                                         {product.categoryName}
@@ -191,11 +199,7 @@ export const InventoryContent = ({
                                                     : 'bg-rose-50 text-rose-700 ring-rose-200'
                                             }`}
                                         >
-                                            <span
-                                                className={`h-1.5 w-1.5 rounded-full ${
-                                                    product.inStock ? 'bg-emerald-500' : 'bg-rose-500'
-                                                }`}
-                                            />
+
                                             {product.inStock ? 'In stock' : 'Out of stock'}
                                         </span>
                                     </td>
