@@ -44,3 +44,18 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
         return res.status(401).json({ message: 'Unauthorized' });
     }
 }
+
+export const authorizeAdmin = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const user = ( req as AuthenticatedRequest).user;
+
+    if(user.role ! == 'admin'){
+        return res.status(403).json({
+            message: 'Forbidden: Admins only'
+        });
+    }
+    next();
+};

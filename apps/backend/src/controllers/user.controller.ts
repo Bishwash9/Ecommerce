@@ -124,4 +124,3 @@ export const logoutUser = async (req: Request, res: Response) => {
 
    
 }
-

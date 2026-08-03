@@ -8,7 +8,7 @@ export const generateTokens = (user: any) => {
     const accessToken = jwt.sign(
         {id: user._id,role: user.role},
         process.env.JWT_ACCESS_KEY!,
-        {expiresIn: '15m'}  
+        {expiresIn: '15m'}
     );
 
     const refreshToken = jwt.sign(
@@ -124,5 +124,3 @@ export const logoutUser = async (activeRefreshToken: string, userID: string) => 
 
     return {message: 'Logged out successfully'};
 }
-
-

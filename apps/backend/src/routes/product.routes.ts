@@ -3,15 +3,15 @@ import {getAllProducts, getProductById, createProduct, deleteProduct, editProduc
 import { validate } from '../middlewares/product.middleware.js';
 import { createProductSchema, editProductSchema } from '../validations/product.validation.js';
 import { uploadProductImages } from '../middlewares/upload.middleware.js';
-import { authenticate } from '../middlewares/auth.middleware.js';
+import { authenticate, authorizeAdmin } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
 router.get('/fetch-products', getAllProducts);
 router.get('/fetch-product/:id', getProductById);
-router.post('/create-product', validate(createProductSchema), createProduct);
-router.put('/edit-product/:id', validate(editProductSchema), editProduct);
-router.delete('/delete-product/:id', deleteProduct);
-router.post('/upload-images', authenticate, uploadProductImages, uploadImages);
+router.post('/create-product', authenticate, authorizeAdmin, validate(createProductSchema), createProduct);
+router.put('/edit-product/:id', authenticate, authorizeAdmin, validate(editProductSchema), editProduct);
+router.delete('/delete-product/:id', authenticate, authorizeAdmin, deleteProduct);
+router.post('/upload-images', authenticate, authorizeAdmin, uploadProductImages, uploadImages);
 
 export default router;
