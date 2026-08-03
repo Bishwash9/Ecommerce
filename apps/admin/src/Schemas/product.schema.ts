@@ -15,7 +15,14 @@ export const addProductSchema = z.object({
         .min(0, "Product stock must be a non-negative number"),
     categoryId: objectIdSchema,
     images: z.array(z.string()).optional(),
-    isActive: z.boolean()
+    isActive: z.boolean(),
+    brand: z.string()
+        .trim()
+        .min(1, "Product brand is required")
+        .max(100, "Product brand must be at most 100 characters"),
+    tags: z.string()
+        .trim()
+        .min(1, "Enter at least one product tag")
     
 });
 
@@ -30,7 +37,14 @@ export const editProductSchema = z.object({
     stock: z.number()
         .min(0, "Product stock must be a non-negative number"),
     images: z.array(z.string()).optional(),
-    isActive: z.boolean()
+    isActive: z.boolean(),
+    brand: z.string()
+        .trim()
+        .min(1, "Product brand is required")
+        .max(100, "Product brand must be at most 100 characters"),
+    tags: z.string()
+        .trim()
+        .min(1, "Enter at least one product tag")
 });
 
 export type AddProductData = z.infer<typeof addProductSchema>;

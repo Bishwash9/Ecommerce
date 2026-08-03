@@ -6,7 +6,7 @@ import { InventoryContent } from "../Features/Inventory/InventoryContent"
 import { InventoryStatCard } from "../Features/Inventory/InventoryStatCard"
 import { useAuth } from "../Context/AuthContext"
 import { useEffect, useState } from "react"
-import { ChartColumnStacked, OctagonX, Sparkles } from "lucide-react"
+import { ChartColumnStacked, OctagonX, Sparkles, Tags } from "lucide-react"
 import type { Product } from "../Types/product"
 import { productService } from "../Services/productService"
 
@@ -97,42 +97,45 @@ export default function Inventory() {
     totalProducts: products.length,
     totalCategories: categories.length,
     outOfStock: products.filter((product) => !product.inStock).length,
+    totalBrands: new Set(
+      products.flatMap((product) => {
+        const brand = product.brand?.trim().toLowerCase();
+        return brand ? [brand] : [];
+      })
+    ).size,
   }
 
 
   return (
     <div className='space-y-6'>
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6'>
-        <InventoryStatCard title='Total Products' value={stats.totalProducts} icon={<Sparkles size={20} />} iconColor='' />
-        <InventoryStatCard title='Total Categories' value={stats.totalCategories} icon={<ChartColumnStacked size={20} />} iconColor='' />
-        <InventoryStatCard title='Out of Stock' value={stats.outOfStock} icon={<OctagonX size={20} />} iconColor='' />
+      <div className='mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4'>
+        <InventoryStatCard title='Total Products' value={stats.totalProducts} icon={<Sparkles size={26} />} iconColor='bg-violet-50 text-violet-600' />
+        <InventoryStatCard title='Total Categories' value={stats.totalCategories} icon={<ChartColumnStacked size={26} />} iconColor='bg-sky-50 text-sky-600' />
+        <InventoryStatCard title='Out of Stock' value={stats.outOfStock} icon={<OctagonX size={26} />} iconColor='bg-rose-50 text-rose-600' />
+        <InventoryStatCard title='Brands' value={stats.totalBrands} icon={<Tags size={26} />} iconColor='bg-amber-50 text-amber-600' />
       </div>
 
-      <div className='grid grid-cols-1 2xl:grid-cols-[minmax(0,1fr)_360px] gap-6 items-start'>
-        <div>
-          {loading ? (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden p-6 space-y-4">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="h-20 bg-slate-50 animate-pulse rounded-lg border border-slate-100" />
-              ))}
-            </div>
-          ) : (
-
-            <InventoryContent
-              categories={categories}
-              onAddCategory={handleAddCategory}
-              onEditCategory={handleEditCategory}
-              onDeleteCategory={handleDeleteCategory}
-              products={products}
-              onAddProduct={handleAddProduct}
-              onEditProduct={handleEditProduct}
-              onDeleteProduct={handleDeleteProduct}
-            />
-
-          )}
+      {loading ? (
+        <div className="space-y-4 overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="h-20 animate-pulse rounded-lg border border-slate-100 bg-slate-50" />
+          ))}
         </div>
-      </div>
+      ) : (
+
+        <InventoryContent
+          categories={categories}
+          onAddCategory={handleAddCategory}
+          onEditCategory={handleEditCategory}
+          onDeleteCategory={handleDeleteCategory}
+          products={products}
+          onAddProduct={handleAddProduct}
+          onEditProduct={handleEditProduct}
+          onDeleteProduct={handleDeleteProduct}
+        />
+
+      )}
 
       <InventoryModal
         isOpen={isCategoryModalOpen || isProductModalOpen}
@@ -148,4 +151,3 @@ export default function Inventory() {
     </div>
   )
 }
-

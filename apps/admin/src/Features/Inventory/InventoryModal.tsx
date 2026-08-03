@@ -111,6 +111,8 @@ const ProductForm = ({
                 stock: editingProduct?.stock ?? 0,
                 images: editingProduct?.images ?? [],
                 isActive: editingProduct?.isActive ?? true,
+                brand: editingProduct?.brand ?? '',
+                tags: editingProduct?.tags?.join(', ') ?? '',
             }
             : {
                 name: '',
@@ -120,6 +122,8 @@ const ProductForm = ({
                 categoryId: '',
                 images: [],
                 isActive: true,
+                brand: '',
+                tags: '',
             },
     });
 
@@ -132,6 +136,8 @@ const ProductForm = ({
                 stock: editingProduct.stock,
                 images: editingProduct.images,
                 isActive: editingProduct.isActive,
+                brand: editingProduct.brand,
+                tags: editingProduct.tags?.join(', ') ?? '',
             });
             return;
         }
@@ -144,6 +150,8 @@ const ProductForm = ({
             categoryId: '',
             images: [],
             isActive: true,
+            brand: '',
+            tags: '',
         });
     }, [editingProduct, reset]);
 
@@ -151,6 +159,10 @@ const ProductForm = ({
 
     const onSubmit = async (data: AddProductFormValues | EditProductFormValues) => {
         const imageUrls = imageFile.length ? await productService.uploadProductImages(imageFile): data.images ?? []
+        const tags = data.tags
+            .split(',')
+            .map((tag) => tag.trim().toLowerCase())
+            .filter(Boolean);
 
         if (editingProduct) {
             const editProductData = data as EditProductFormValues;
@@ -162,6 +174,8 @@ const ProductForm = ({
                 editProductData.stock,
                 imageUrls,
                 editProductData.isActive,
+                editProductData.brand,
+                tags,
             );
 
             editProduct(editingProduct.id, updatedProduct);
@@ -180,6 +194,8 @@ const ProductForm = ({
             addProductData.categoryId,
             imageUrls,
             addProductData.isActive,
+            addProductData.brand,
+            tags,
         );
 
         addProduct(newProduct);
@@ -205,6 +221,30 @@ const ProductForm = ({
                     className='w-full px-3 py-2 border border-gray-200 rounded-lg text-sm'
                 />
                 {errors.description && <p className='text-red-500 text-xs'>{errors.description.message}</p>}
+            </div>
+
+            <div className='grid grid-cols-2 gap-3'>
+                <div>
+                    <label className='block text-xs font-medium text-gray-500 mb-1'>Brand</label>
+                    <input
+                        type='text'
+                        placeholder='Enter Brand Name'
+                        {...register('brand')}
+                        className='w-full px-3 py-2 border border-gray-200 rounded-lg text-sm'
+                    />
+                    {errors.brand && <p className='text-red-500 text-xs'>{errors.brand.message}</p>}
+                </div>
+
+                <div>
+                    <label className='block text-xs font-medium text-gray-500 mb-1'>Tags</label>
+                    <input
+                        type='text'
+                        placeholder='Enter tags separated by commas'
+                        {...register('tags')}
+                        className='w-full px-3 py-2 border border-gray-200 rounded-lg text-sm'
+                    />
+                    {errors.tags && <p className='text-red-500 text-xs'>{errors.tags.message}</p>}
+                </div>
             </div>
 
             <div className='grid grid-cols-2 gap-3'>
@@ -308,8 +348,12 @@ export const InventoryModal = ({ isOpen, onClose, editingCategory, editingProduc
     if (!isOpen) return null;
 
     return (
-        <div className='fixed inset-0 bg-black/30 flex items-center justify-center z-50'>
-            <div className='bg-white p-6 rounded-xl border-gray-100 shadow-lg w-90 max-w-md'>
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4'>
+            <div
+                className={`max-h-[90vh] w-full overflow-y-auto rounded-xl border-gray-100 bg-white p-6 shadow-lg sm:p-7 ${
+                    isProduct ? 'max-w-2xl' : 'max-w-md'
+                }`}
+            >
                 <div className='flex items-center justify-between mb-5'>
                     <h2 className='text-lg font-semibold text-gray-800'>
                         {isEditing ? `Edit ${isProduct ? 'Product' : 'Category'}` : `Add ${isProduct ? 'Product' : 'Category'}`}

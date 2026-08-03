@@ -9,6 +9,8 @@ export interface Product {
     inStock: boolean;
     images: string[];
     isActive: boolean;
+    brand: string;
+    tags: string[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -21,8 +23,11 @@ export interface CreateProductRequest {
     categoryName: string;
     categoryId: string;
     stock: number;
+    inStock: boolean;
     images: string[];
     isActive: boolean;
+    brand: string;
+    tags: string[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -36,4 +41,6 @@ export interface EditProductRequest {
     inStock: boolean;
     images: string[];
     isActive: boolean;
+    brand: string;
+    tags: string[];
 }

@@ -29,11 +29,11 @@ export const productService =  {
     },
 
 
-    createProduct: async (name: string, description: string, price: number, stock: number, category: string, images: string[], isActive: boolean): Promise<Product> => {
+    createProduct: async (name: string, description: string, price: number, stock: number, category: string, images: string[], isActive: boolean, brand: string, tags: string[]): Promise<Product> => {
 
         const createData = await apiClient('/products/create-product', {
             method: 'POST',
-            body: JSON.stringify({name, description, price, stock, category, images, isActive}),
+            body: JSON.stringify({name, description, price, stock, category, images, isActive, brand, tags}),
 
         });
 
@@ -45,11 +45,11 @@ export const productService =  {
         return createData.data;
     },
 
-    editProduct: async (id: string, name: string, description: string, price: number, stock: number, images: string[], isActive: boolean): Promise<EditProductRequest> => {
+    editProduct: async (id: string, name: string, description: string, price: number, stock: number, images: string[], isActive: boolean, brand: string, tags: string[]): Promise<EditProductRequest> => {
         
         const editData = await apiClient(`/products/edit-product/${id}`, {
             method: 'PUT',
-            body: JSON.stringify({name, description, price, stock, images, isActive}),
+            body: JSON.stringify({name, description, price, stock, images, isActive, brand, tags}),
         });
 
         if(!editData.data) {

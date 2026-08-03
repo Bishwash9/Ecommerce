@@ -8,13 +8,13 @@ interface StatCardProps {
 
 export const InventoryStatCard: React.FC<StatCardProps> =({title,value,icon,iconColor,valueColor})=>{
     return (
-          <div className='bg-white rounded-xl p-[1.5vw] border border-neutral-200 shadow-sm hover:shadow-md transition-all group flex items-center justify-between gap-[1.2vw]'>
-            <div className={`p-[0.7vw] rounded-lg shrink-0 ${iconColor} transition-all`}>
+          <div className='group flex items-center justify-between gap-4 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md'>
+            <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${iconColor} transition-transform group-hover:scale-105`}>
                 {icon}
             </div>
-            <div className='text-right flex-1 min-w-0'>
-                 <p className="text-[0.8vw] text-slate-400 uppercase tracking-wider mb-[0.2vh] truncate">{title}</p>
-                <h3 className={`text-[2vw] font-light leading-none ${valueColor}`}>{value}</h3>
+            <div className='min-w-0 flex-1 text-right'>
+                 <p className="mb-1 truncate text-xs font-medium uppercase tracking-wider text-slate-400">{title}</p>
+                <h3 className={`text-3xl font-light leading-none text-slate-800 ${valueColor ?? ''}`}>{value}</h3>
             </div>
         </div>
     )

@@ -45,19 +45,25 @@ export const InventoryContent = ({
 
     const filteredProducts = useMemo(() => {
         return products.filter((product) => {
-            const matchesSearch = product.name.toLowerCase().includes(searchProduct.toLowerCase());
+            const searchTerm = searchProduct.trim().toLowerCase();
+            const matchesSearch = [
+                product.name,
+                product.categoryName,
+                product.brand,
+                ...(product.tags ?? []),
+            ].some((value) => value?.toLowerCase().includes(searchTerm));
             const matchesFilter = filterProducts === "All" || product.categoryName === filterProducts
             return matchesSearch && matchesFilter;
         });
     }, [products, searchProduct, filterProducts]);
 
     return (
-        <div className="p-7 flex flex-col gap-6">
-            <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-6 p-4 sm:p-7">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
                     <Box size={18} /> Inventory
                 </h2>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                     {onAddCategory && (
                         <button
                             className="flex items-center gap-2 bg-[#4C3BC0] hover:bg-[#3b2da0] text-white text-xs px-4 py-2.5 rounded-lg transition-colors duration-300 cursor-pointer"
@@ -113,13 +119,16 @@ export const InventoryContent = ({
                     </div>
                 </div>
 
-                <div className="bg-white border border-gray-100 rounded-xl overflow-hidden">
+                <div className="overflow-x-auto rounded-xl border border-gray-100 bg-white">
 
-                    <table className="w-full">
+                    <table className="w-full min-w-[920px]">
                         <thead>
                             <tr className="bg-gray-50/60 border-b border-gray-50">
                                 <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
                                     Product
+                                </th>
+                                <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
+                                    Brand
                                 </th>
                                 <th className="text-left text-[11px] font-medium text-gray-400 px-5 py-3">
                                     Category
@@ -144,8 +153,26 @@ export const InventoryContent = ({
                         <tbody className="divide-y divide-gray-50">
                             {filteredProducts.map((product) => (
                                 <tr key={product.id} className="hover:bg-gray-50/50 transition-colors duration-300">
-                                    <td className="px-5 py-3 text-sm font-medium text-gray-700">
-                                        {product.name}
+                                    <td className="px-5 py-3">
+                                        <div className='text-sm font-medium text-gray-700'>{product.name}</div>
+                                        <div className='mt-1 flex flex-wrap items-center gap-1'>
+                                            {(product.tags ?? []).slice(0, 2).map((tag, index) => (
+                                                <span
+                                                    key={`${tag}-${index}`}
+                                                    className='rounded bg-gray-100 px-1.5 py-0.5 text-[9px] font-medium text-gray-500'
+                                                >
+                                                    #{tag}
+                                                </span>
+                                            ))}
+                                            {(product.tags?.length ?? 0) > 2 && (
+                                                <span className='text-[9px] font-medium text-gray-400'>
+                                                    +{product.tags.length - 2}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </td>
+                                    <td className='px-5 py-3 text-sm font-medium text-gray-600'>
+                                        {product.brand || '—'}
                                     </td>
                                     <td className='px-5 py-3 text-sm font-medium text-gray-600'>
                                         {product.categoryName}
@@ -215,7 +242,7 @@ export const InventoryContent = ({
 
 
 
-            <div className="flex flex-col gap-3 border border-gray-200 rounded-xl p-3 bg-white w-100">
+            <div className="flex w-full flex-col gap-3 rounded-xl border border-gray-200 bg-white p-3 lg:max-w-md">
                 <div className="flex items-center justify-between gap-4">
                     <div className="relative w-full md:flex-1">
                         <Search
