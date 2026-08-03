@@ -52,7 +52,7 @@ export const authorizeAdmin = (
 ) => {
     const user = ( req as AuthenticatedRequest).user;
 
-    if(user.role ! == 'admin'){
+    if(user.role !== 'admin'){
         return res.status(403).json({
             message: 'Forbidden: Admins only'
         });

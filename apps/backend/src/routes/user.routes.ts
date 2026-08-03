@@ -3,6 +3,7 @@ import { registerUser, loginUser, refreshSession, logoutUser } from '../controll
 
 import { validate } from '../middlewares/user.middleware.js';
 import { registerUserSchema, loginUserSchema} from '../validations/user.validation.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
 
 
 
@@ -13,7 +14,7 @@ router.post('/register', validate(registerUserSchema), registerUser);
 
 router.post('/login', validate(loginUserSchema), loginUser);
 
-router.post('/logout', logoutUser);
+router.post('/logout', authenticate, logoutUser);
 
 router.post('/refresh-token', refreshSession);
 
