@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {getAllProducts, getProductById, createProduct, deleteProduct, editProduct, uploadImages} from '../controllers/product.controller.js';
+import {getAllProducts, getProductById, createProduct, deleteProduct, editProduct, uploadImages, getFeaturedProducts} from '../controllers/product.controller.js';
 import { validate } from '../middlewares/product.middleware.js';
 import { createProductSchema, editProductSchema } from '../validations/product.validation.js';
 import { uploadProductImages } from '../middlewares/upload.middleware.js';
@@ -9,6 +9,7 @@ const router = Router();
 
 router.get('/fetch-products', getAllProducts);
 router.get('/fetch-product/:id', getProductById);
+router.get('/fetch-featured', getFeaturedProducts);
 router.post('/create-product', authenticate, authorizeAdmin, validate(createProductSchema), createProduct);
 router.put('/edit-product/:id', authenticate, authorizeAdmin, validate(editProductSchema), editProduct);
 router.delete('/delete-product/:id', authenticate, authorizeAdmin, deleteProduct);

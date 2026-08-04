@@ -151,3 +151,33 @@ export const deleteProduct = async (id: string) => {
     };
 };
 
+export const getFeaturedProducts = async () => {
+     const featuredProducts = await Products.find({
+        isActive: true,
+        stock: { $gt: 0},
+        tags: { $in: ["bestseller", "trending", "new"]},
+     }).sort({createdAt: -1}).limit(4)
+
+
+     if(!featuredProducts || featuredProducts.length === 0) {
+        throw new Error('No featured products found');
+     }
+
+     return featuredProducts.map(prod => ({
+        id: prod._id,
+        name: prod.name,
+        description: prod.description,
+        price: prod.price,
+        categoryId: prod.category,
+        categoryName: prod.category,
+        stock: prod.stock,
+        inStock: prod.stock > 0,
+        images: prod.images,
+        isActive: prod.isActive,
+        brand: prod.brand,
+        tags: prod.tags,
+        createdAt: prod.createdAt,
+        updatedAt: prod.updatedAt
+     }));
+}
+

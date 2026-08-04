@@ -113,6 +113,21 @@ export const deleteProduct = async (req: Request, res: Response) => {
     }
 };
 
+export const getFeaturedProducts = async (req: Request, res: Response) => {
+    try {
+        const featuredProducts = await productService.getFeaturedProducts();
+        res.status(200).json({
+            success: true,
+            data: featuredProducts
+        });
+    }catch(error) {
+        res.status(400).json({
+            message: error instanceof Error ? error.message : 'Failed to fetch featured products'
+        });
+    }
+};
+
+
 export const uploadImages = async (req: Request, res: Response) => {
     try {
         const files = req.files as Express.Multer.File[];
