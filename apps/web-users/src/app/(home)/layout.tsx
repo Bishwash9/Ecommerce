@@ -9,7 +9,7 @@ export default async function RootLayout({ children}: {children: React.ReactNode
     return (
         <div className='flex flex-col min-h-screen'>
             <Navbar isLoggedIn={isLoggedIn}/>
-            <main className='grow container mx-auto px-4 py-8'>
+            <main className='grow'>
                 {children}
             </main>
             <Footer/>
