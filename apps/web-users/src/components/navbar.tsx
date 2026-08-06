@@ -5,113 +5,127 @@ import { usePathname } from "next/navigation";
 import { authService } from "@/app/services/authService";
 import Link from "next/link";
 
-
 interface NavbarProps {
-    isLoggedIn: boolean;
+  isLoggedIn: boolean;
 }
 
 export default function Navbar({ isLoggedIn }: NavbarProps) {
-    const router = useRouter();
-    const pathname = usePathname();
+  const router = useRouter();
+  const pathname = usePathname();
 
-   const navLinks = [
-      {label: 'Home', href: '/'},
-      {label: 'Shop', href: '/shop'},
-      {label: 'About', href: '/about'},
-   ]
+  const navLinks = [
+    { label: "Home", href: "/" },
+    { label: "Shop", href: "/shop" },
+    { label: "About", href: "/about" },
+  ];
 
-    const handleLogout = async () => {
-        try {
-            await authService.logout();
-            router.refresh(); //Refresh the page to update the server side cookies
-            router.push('/');
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
-    };
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      router.refresh(); //Refresh the page to update the server side cookies
+      router.push("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
-    return (
-        <nav className='flex items-center justify-between px-10 py-5 border-b border-neutral-100'>
-            <Link href='/' className="text-xl font-medium tracking-[0.25em] text-neutral-900">
-                EAZY
+  return (
+    <nav className="flex items-center justify-between px-10 py-5 border-b border-neutral-100">
+      <Link
+        href="/"
+        className="text-xl font-medium tracking-[0.25em] text-neutral-900"
+      >
+        EAZY
+      </Link>
+
+      <div className="hidden md:flex items-center gap-8">
+        {navLinks.map((link) => {
+          const isActive =
+            link.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(link.href);
+
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              aria-current={isActive ? "page" : undefined}
+              className={`relative text-sm font-medium tracking-[0.2em] transition-colors duration-300
+                        after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-neutral-900 after:transition-transform after:duration-300
+                    ${
+                    isActive
+                    ? "text-neutral-900 after:scale-x-100"
+                    : "text-neutral-400 hover:text-neutral-900 hover:after:scale-x-100"
+                    }
+                        `}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className="flex items-center gap-5">
+        {isLoggedIn ? (
+          <>
+            <Link
+              href="/profile"
+              className="text-neutral-500 hover:text-neutral-900 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="8" r="4" />
+                <path d="M20 21a8 8 0 1 0-16 0" />
+              </svg>
+            </Link>
+            <Link
+              href="/cart"
+              className="relative text-neutral-500 hover:text-neutral-900 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                <line x1="3" x2="21" y1="6" y2="6" />
+                <path d="M16 10a4 4 0 0 1-8 0" />
+              </svg>
             </Link>
 
-            <div className='hidden md:flex items-center gap-8'>
-                {navLinks.map((link) => {
-                    const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
-
-                    return (
-                        <Link
-  key={link.href}
-  href={link.href}
-  aria-current={isActive ? 'page' : undefined}
-  className={`relative text-sm font-medium tracking-[0.2em] transition-colors duration-300
-    after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-neutral-900 after:transition-transform after:duration-300
-    ${
-      isActive
-        ? 'text-neutral-900 after:scale-x-100'
-        : 'text-neutral-400 hover:text-neutral-900 hover:after:scale-x-100'
-    }
-  `}
->
-  {link.label}
-</Link>
-                    )
-                })}
-            </div>
-
-            <div className='flex items-center gap-5'>
-                {isLoggedIn ? (
-                    <>
-                        <Link href='/profile' className='text-neutral-500 hover:text-neutral-900 transition-colors'>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <circle cx="12" cy="8" r="4" />
-                                <path d="M20 21a8 8 0 1 0-16 0" />
-                            </svg>
-                        </Link>
-                        <Link href='/cart' className='relative text-neutral-500 hover:text-neutral-900 transition-colors'>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                                <line x1="3" x2="21" y1="6" y2="6" />
-                                <path d="M16 10a4 4 0 0 1-8 0" />
-                            </svg>
-                        </Link>
-
-                        <button onClick={handleLogout}
-                            className="text-neutral-500 hover:text-red-500 transition-colors">
-                            Logout
-                        </button>
-                    </>
-                ) : (
-                    <>
-                    <Link href='/login' className='text-neutral-900 border hover:bg-neutral-900 hover:text-white  px-5 py-1 rounded-md  transition-colors duration-300'>
-                        Login
-                    </Link>
-                    </>
-                
-                )}
-            </div>
-
-        </nav>
-    )
+            <button
+              onClick={handleLogout}
+              className="text-neutral-500 hover:text-red-500 transition-colors"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link
+              href="/login"
+              className="text-neutral-900 border hover:bg-neutral-900 hover:text-white  px-5 py-1 rounded-md  transition-colors duration-300"
+            >
+              Login
+            </Link>
+          </>
+        )}
+      </div>
+    </nav>
+  );
 }
