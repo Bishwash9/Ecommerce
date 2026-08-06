@@ -27,18 +27,6 @@ export const productService = {
         return getData.data
     },
 
-    getFeaturedProduct: async (): Promise<any> => {
-        const getFeaturedData = await apiClient('products/fetch-featured', {
-            method: 'GET'
-        });
-        
-        if(!getFeaturedData.data){
-            console.error('Failed to fetch featured products');
-            throw new Error('Failed to fetch featured products');
-        }
-
-        return getFeaturedData.data;
-    }
 
 
 }

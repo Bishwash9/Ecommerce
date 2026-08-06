@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { authService } from "@/app/services/authService";
 import Link from "next/link";
+
 
 interface NavbarProps {
     isLoggedIn: boolean;
@@ -10,6 +12,13 @@ interface NavbarProps {
 
 export default function Navbar({ isLoggedIn }: NavbarProps) {
     const router = useRouter();
+    const pathname = usePathname();
+
+   const navLinks = [
+      {label: 'Home', href: '/'},
+      {label: 'Shop', href: '/shop'},
+      {label: 'About', href: '/about'},
+   ]
 
     const handleLogout = async () => {
         try {
@@ -28,15 +37,27 @@ export default function Navbar({ isLoggedIn }: NavbarProps) {
             </Link>
 
             <div className='hidden md:flex items-center gap-8'>
-                {["Shop", "About", "Home"].map((link) => (
-                    <Link
-                        key={link}
-                        href={`/${link.toLowerCase()}`}
-                        className='text-sm font-medium tracking-[0.25em] text-neutral-500 hover:text-neutral-900 transition-colors'
-                    >
-                        {link}
-                    </Link>
-                ))}
+                {navLinks.map((link) => {
+                    const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+
+                    return (
+                        <Link
+  key={link.href}
+  href={link.href}
+  aria-current={isActive ? 'page' : undefined}
+  className={`relative text-sm font-medium tracking-[0.2em] transition-colors duration-300
+    after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-neutral-900 after:transition-transform after:duration-300
+    ${
+      isActive
+        ? 'text-neutral-900 after:scale-x-100'
+        : 'text-neutral-400 hover:text-neutral-900 hover:after:scale-x-100'
+    }
+  `}
+>
+  {link.label}
+</Link>
+                    )
+                })}
             </div>
 
             <div className='flex items-center gap-5'>

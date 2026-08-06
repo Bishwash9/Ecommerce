@@ -1,6 +1,7 @@
 import Link from "next/dist/client/link";
 import Image from "next/image";
 import heroImage from "../../app/assets/hero.png";
+import { ShoppingBag } from "lucide-react";
 
 export default function Hero() {
     return (
@@ -38,16 +39,24 @@ export default function Hero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
                     href="/shop"
-                    className="rounded-md border border-amber-100/80 bg-amber-100/80 px-7 py-3.5 text-xs font-semibold tracking-widest text-white transition"
+                   className='group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-white/30 bg-white/5 px-7 py-3.5 text-xs tracking-widest text-white backdrop-blur-sm transition-colors hover:text-neutral-950 duration-300
+                    before:absolute before:inset-0 before:-translate-x-full before:bg-amber-100/80 before:transition-transform before:duration-300 hover:before:translate-x-0'
                 >
-                    SHOP NOW
+                   <span className="relative z-10">SHOP NOW</span>
+
+                     <ShoppingBag size={16} className='transition-transform duratoin-300 relative z-10' />
                 </Link>
 
                 <Link
                     href="/about"
-                    className="rounded-md border border-white/30 bg-white/5 px-7 py-3.5 text-xs tracking-widest text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-950 duration-300"
+                    className='group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-white/30 bg-white/5 px-7 py-3.5 text-xs tracking-widest text-white backdrop-blur-sm transition-colors hover:text-neutral-950 duration-300
+                    before:absolute before:inset-0 before:-translate-x-full before:bg-white before:transition-transform before:duration-300 hover:before:translate-x-0'
                 >
-                    LEARN MORE
+                    <span className="relative z-10">LEARN MORE</span>
+
+                    <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
+                            &rarr;
+                    </span>
                 </Link>
             </div>
         </div>
