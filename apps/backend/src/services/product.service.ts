@@ -156,7 +156,10 @@ export const getFeaturedProducts = async () => {
         isActive: true,
         stock: { $gt: 0},
         tags: { $in: ["bestseller", "trending", "new"]},
-     }).sort({createdAt: -1}).limit(4)
+     }).populate<{category: ICategory}>({
+        path: 'category',
+        select: 'name'
+     }).sort({ createdAt: -1 }).limit(4);
 
 
      if(!featuredProducts || featuredProducts.length === 0) {
@@ -168,8 +171,8 @@ export const getFeaturedProducts = async () => {
         name: prod.name,
         description: prod.description,
         price: prod.price,
-        categoryId: prod.category,
-        categoryName: prod.category,
+        categoryId: prod.category?._id,
+        categoryName: prod.category?.name,
         stock: prod.stock,
         inStock: prod.stock > 0,
         images: prod.images,
