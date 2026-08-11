@@ -15,7 +15,7 @@ export default function Navbar({ isLoggedIn }: NavbarProps) {
 
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Shop", href: "/shop" },
+    { label: "Shop", href: "/products" },
     { label: "About", href: "/about" },
   ];
 
