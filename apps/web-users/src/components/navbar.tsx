@@ -22,10 +22,12 @@ export default function Navbar({ isLoggedIn }: NavbarProps) {
   const handleLogout = async () => {
     try {
       await authService.logout();
-      router.refresh(); //Refresh the page to update the server side cookies
-      router.push("/");
+ 
     } catch (error) {
       console.error("Logout error:", error);
+    }finally {
+      router.replace('/');
+      router.refresh(); // Refresh the page to update the UI after logout
     }
   };
 

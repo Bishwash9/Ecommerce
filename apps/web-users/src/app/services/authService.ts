@@ -25,11 +25,13 @@ export const authService = {
     },
 
     logout: async ():Promise<any> => {
-        //remove the access token from local storage
-        localStorage.removeItem('accessToken');
-        //remove the refresh token from the cookie
-        await apiClient('/users/logout', {
-            method: 'POST',
-        });
+        try {
+            await apiClient('/users/logout', {
+                method: 'POST',
+            });
+        } finally {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('user');
+        }
     }
 }
