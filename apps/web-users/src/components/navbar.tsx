@@ -4,12 +4,33 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { authService } from "@/app/services/authService";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 interface NavbarProps {
   isLoggedIn: boolean;
 }
 
 export default function Navbar({ isLoggedIn }: NavbarProps) {
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    handleScroll(); // Check scroll position on mount
+
+    window.addEventListener('scroll', handleScroll, {
+      passive: true
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
+  },[]);
+
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -32,7 +53,8 @@ export default function Navbar({ isLoggedIn }: NavbarProps) {
   };
 
   return (
-    <nav className="flex items-center justify-between px-10 py-5 border-b border-neutral-100">
+    <nav className={`sticky top-0 z-50 flex items-center justify-between px-10 py-5 transition-all duration-500
+    ${isScrolled ? 'border-white/20 bg-white/75 shadow-sm backdrop-blur-md' : 'border-neutral-100 bg-white'}`}>
       <Link
         href="/"
         className="text-xl font-medium tracking-[0.25em] text-neutral-900"
