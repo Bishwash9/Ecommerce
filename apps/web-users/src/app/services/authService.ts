@@ -7,11 +7,6 @@ export const authService = {
             body: JSON.stringify({ email, password }),
         });
 
-        if(loginData.data.accessToken){
-            localStorage.setItem('accessToken', loginData.data.accessToken);
-            localStorage.setItem('user', JSON.stringify(loginData.data.user));
-        }
-
         return loginData;
     },
 
@@ -25,13 +20,10 @@ export const authService = {
     },
 
     logout: async ():Promise<any> => {
-        try {
+        
             await apiClient('/users/logout', {
                 method: 'POST',
             });
-        } finally {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('user');
-        }
+         
     }
 }

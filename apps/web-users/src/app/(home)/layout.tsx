@@ -1,18 +1,20 @@
-import {cookies} from 'next/headers';
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
-export default async function RootLayout({ children}: {children: React.ReactNode}) {
-    const cookieStore = await cookies(); 
-    const isLoggedIn = cookieStore.get('accessToken')?.value ? true : false;
-
+export default function HomeLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     return (
-        <div className='flex flex-col min-h-screen'>
-            <Navbar isLoggedIn={isLoggedIn}/>
-            <main className='grow'>
+        <div className="flex min-h-screen flex-col">
+            <Navbar />
+
+            <main className="grow">
                 {children}
             </main>
-            <Footer/>
+
+            <Footer />
         </div>
-    )
+    );
 }

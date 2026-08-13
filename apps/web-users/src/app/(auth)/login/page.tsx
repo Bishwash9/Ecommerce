@@ -8,14 +8,19 @@ import { authService } from '../../services/authService';
 import { useRouter } from 'next/navigation';
 import adminImage from '../../assets/admin.png'; // Import the image
 import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
     const [mode, setMode] = useState<"login" | "signup">("login");
     const [showPassword, setShowPassword] = useState(false);
 
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const isLoginmode = mode === "login";
+
+    const { login } = useAuth();
 
 
     //initialze useform with zod resolver and default values
@@ -33,9 +38,15 @@ export default function LoginPage() {
         try {
             if (mode === "login") {
 
-                await authService.login(data.email, data.password);
+                const response = await authService.login(data.email, data.password);
 
-                router.push('/');
+                login(response.data.user, response.data.accessToken);
+
+                const requestedRedirect = searchParams.get('redirect');
+
+                const redirectTo = requestedRedirect?.startsWith('/') ? requestedRedirect : '/';
+
+                router.replace(redirectTo);
             } else {
                 const registerData = data as RegisterData;
                 await authService.register(registerData.name, registerData.email, registerData.password);

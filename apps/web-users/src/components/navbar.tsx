@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import { authService } from "@/app/services/authService";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
 
-interface NavbarProps {
-  isLoggedIn: boolean;
-}
 
-export default function Navbar({ isLoggedIn }: NavbarProps) {
+export default function Navbar() {
+  const { user, status, logout } = useAuth();
+  const isLoggedIn = status === "authenticated" && user !== null;
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -43,7 +43,7 @@ export default function Navbar({ isLoggedIn }: NavbarProps) {
   const handleLogout = async () => {
     try {
       await authService.logout();
- 
+      logout(); // Update the context state
     } catch (error) {
       console.error("Logout error:", error);
     }finally {

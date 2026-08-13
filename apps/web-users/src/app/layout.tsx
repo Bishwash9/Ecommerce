@@ -1,17 +1,18 @@
-import './globals.css'
-import { cookies } from 'next/headers'
+import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('accessToken')?.value;
-
-  //if cookies exist user is logged in 
-  const isLoggedIn = !!token;
+export default function RootLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     return (
-        <html>
+        <html lang="en">
             <body>
-                {children}
+                <AuthProvider>
+                    {children}
+                </AuthProvider>
             </body>
         </html>
-    )
+    );
 }

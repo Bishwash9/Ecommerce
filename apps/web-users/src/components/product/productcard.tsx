@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Product } from "../../app/types/product";
+import ProductActions from "./productActions";
 
 interface ProductCardProps {
     product: Product;
@@ -48,6 +49,8 @@ export default function ProductCard({product}: ProductCardProps) {
                         Rs. {product.price.toLocaleString("en-NP")}
                     </p>
                 </div>
+
+                <ProductActions productId={product.id} />
             </div>
         </article>
     );
