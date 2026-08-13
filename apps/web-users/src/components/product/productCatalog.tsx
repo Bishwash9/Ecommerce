@@ -3,17 +3,19 @@
 import { Product } from "@/app/types/product";
 import ProductCard from "./productcard";
 import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
 
 interface ProductCatalogProps {
     products: Product[];
 }
 
-export default function ProductCatalog({products}: ProductCatalogProps) {
+export default function ProductCatalog({ products }: ProductCatalogProps) {
 
     const [search, setSearch] = useState('');
     const [selectedBrand, setSelectedBrand] = useState<string[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [showBrands, setShowBrands] = useState(true);
+    const [showCategories, setShowCategories] = useState(true);
 
     const brands = useMemo(() => {
         return Array.from(
@@ -41,19 +43,27 @@ export default function ProductCatalog({products}: ProductCatalogProps) {
             return matchesSearch && matchesBrand && matchesCategory;
         })
     }, [products, search, selectedBrand, selectedCategories]);
-    
+
 
     //handlers
 
+    const toggleShowBrands = () => {
+        setShowBrands((current) => !current);
+    };
+
+    const toggleShowCategories = () => {
+        setShowCategories((current) => !current);
+    }
+
     const toggleBrand = (brand: string) => {
         setSelectedBrand((current) =>
-             current.includes(brand)
+            current.includes(brand)
                 ? current.filter((item) => item !== brand)
                 : [...current, brand])
     };
 
     const toggleCategory = (category: string) => {
-        setSelectedCategories((current) => 
+        setSelectedCategories((current) =>
             current.includes(category)
                 ? current.filter((item) => item !== category)
                 : [...current, category]
@@ -77,7 +87,7 @@ export default function ProductCatalog({products}: ProductCatalogProps) {
                 <div className='mx-auto mt-8 max-w-2xl'>
                     <div className='relative'>
                         <Search size={18}
-                        className='absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-400'/>
+                            className='absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-400' />
                         <input
                             type='text'
                             placeholder='Search products, brands, categories...'
@@ -92,10 +102,10 @@ export default function ProductCatalog({products}: ProductCatalogProps) {
                     <aside className='rounded-xl border border-stone-200 bg-white p-5 lg:sticky lg:top-24'>
                         <div className='flex items-center justify-between border-b border-stone-200 pb-4'>
                             <h2 className='text-sm font-semibold uppercase underline underline-offset-4 tracking-[0.15em] text-stone-900'>
-                                    Filters
+                                Filters
                             </h2>
                             {hasFiltersApplied && (
-                                <button 
+                                <button
                                     type='button'
                                     onClick={clearFilters}
                                     className='text-xs cursor-pointer text-stone-500 underline underline-offset-4 transition hover:text-amber-900 duration-300'
@@ -107,53 +117,101 @@ export default function ProductCatalog({products}: ProductCatalogProps) {
                         </div>
 
                         <div className='py-5 border-b border-stone-200'>
-                            <h3 className='text-xs font-semibold uppercase tracking-[0.15em] text-stone-700'>
+                            <button
+                                type="button"
+                                onClick={toggleShowBrands}
+                                aria-expanded={showBrands}
+                                className="flex w-full cursor-pointer items-center justify-between"
+                            >
+                                <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-stone-700">
                                     Brands
-                            </h3>
-                            <div className='mt-4 space-y-3'>
-                                {brands.map((brand) => (
-                                    <label key={brand}
-                                     className='flex cursor-pointer items-center gap-3 text-sm text-stone-700'
-                                    >
-                                        <input
-                                            type='checkbox'
-                                            checked={selectedBrand.includes(brand)}
-                                            onChange={() => toggleBrand(brand)}
-                                            className='h-4 w-4 accent-stone-900'
-                                        />
-                                        <span className='uppercase text-xs tracking-[0.15em]'>{brand}</span>
-                                    </label>
-                                ))}
+                                </h3>
+
+                                <ChevronDown
+                                    size={16}
+                                    className={`text-stone-500 transition-transform duration-500 ease-in-out ${showBrands ? "rotate-180" : ""
+                                        }`}
+                                />
+                            </button>
+
+                            <div
+                                aria-hidden={!showBrands}
+                                className={`grid transition-[grid-template-rows,opacity] duration-500 ease-in-out ${showBrands
+                                    ? "grid-rows-[1fr] opacity-100"
+                                    : "pointer-events-none grid-rows-[0fr] opacity-0"
+                                    }`}
+                            >
+                                <div className=" min-h-0 overflow-hidden">
+                                    <div className="space-y-3 pt-4">
+                                    {brands.map((brand) => (
+                                        <label
+                                            key={brand}
+                                            className="flex cursor-pointer items-center gap-3 text-sm text-stone-700"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedBrand.includes(brand)}
+                                                onChange={() => toggleBrand(brand)}
+                                                className="h-4 w-4 accent-stone-900"
+                                            />
+
+                                            <span className="text-xs uppercase tracking-[0.15em]">
+                                                {brand}
+                                            </span>
+                                        </label>
+                                    ))}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className='pt-5'>
-                            <h3 className='text-xs font-semibold uppercase tracking-[0.15em] text-stone-700'>
+                        <div className="pt-5">
+                            <button
+                                type="button"
+                                onClick={toggleShowCategories}
+                                aria-expanded={showCategories}
+                                className="flex w-full cursor-pointer items-center justify-between"
+                            >
+                                <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-stone-700">
                                     Categories
-                            </h3>
+                                </h3>
 
-                            <div className='mt-4 space-y-3'>
-                                  {categories.map((category) => (
-                                    <label
-                                        key={category}
-                                        className="flex cursor-pointer items-center gap-3 text-sm text-stone-600"
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedCategories.includes(
-                                                category as string
-                                            )}
-                                            onChange={() =>
-                                                toggleCategory(category as string) 
-                                            }
-                                            className="h-4 w-4 accent-stone-900"
-                                        />
+                                <ChevronDown
+                                    size={16}
+                                    className={`text-stone-500 transition-transform duration-500 ease-in-out ${showCategories ? "rotate-180" : ""
+                                        }`}
+                                />
+                            </button>
 
-                                        <span className='uppercase text-xs tracking-[0.15em]'>{category}</span>
-                                    </label>
-                                ))}
+                            <div
+                                aria-hidden={!showCategories}
+                                className={`grid transition-[grid-template-rows,opacity] duration-500 ease-in-out ${showCategories
+                                    ? "grid-rows-[1fr] opacity-100"
+                                    : "pointer-events-none grid-rows-[0fr] opacity-0"
+                                    }`}
+                            >
+                                <div className="min-h-0 overflow-hidden">
+                                    <div className="space-y-3 pt-4">
+                                    {categories.map((category) => (
+                                        <label
+                                            key={category}
+                                            className="flex cursor-pointer items-center gap-3 text-sm text-stone-600"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedCategories.includes(category as string)}
+                                                onChange={() => toggleCategory(category as string)}
+                                                className="h-4 w-4 accent-stone-900"
+                                            />
+
+                                            <span className="text-xs uppercase tracking-[0.15em]">
+                                                {category}
+                                            </span>
+                                        </label>
+                                    ))}
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
 
                     </aside>
@@ -197,7 +255,7 @@ export default function ProductCatalog({products}: ProductCatalogProps) {
 
                 </div>
 
-               
+
 
             </div>
 
