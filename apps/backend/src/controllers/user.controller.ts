@@ -29,7 +29,8 @@ export const loginUser = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', //encrypted only in production
             sameSite: 'lax', //prevents CSRF attacks
-            maxAge: 7 * 24 * 60 * 60 * 1000 //7 days
+            maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
+            path: '/' //cookie is accessible across the entire site
        });
 
        //setting accesstoken cookie for my user side
@@ -37,7 +38,8 @@ export const loginUser = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
-            maxAge: 15 * 60 * 1000 //15 minutes
+            maxAge: 15 * 60 * 1000, //15 minutes
+            path: '/' //cookie is accessible across the entire site
        })
 
        //return only the user details and short lived acces token
