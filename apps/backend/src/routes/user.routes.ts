@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import { registerUser, loginUser, refreshSession, logoutUser } from '../controllers/user.controller.js';
 
-import { validate } from '../middlewares/user.middleware.js';
+import { validate } from '../middlewares/validate.middleware.js';
 import { registerUserSchema, loginUserSchema} from '../validations/user.validation.js';
 import { authenticate } from '../middlewares/auth.middleware.js';
 
