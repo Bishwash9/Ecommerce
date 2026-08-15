@@ -10,3 +10,5 @@ router.get('/get-cart', authenticate, getMyCart);
 router.post('/add-cart', authenticate, validate(addToCartSchema), addToCart);
 router.delete('/remove-cart/:productId', authenticate, removeFromCart);
 router.patch('/update-cart/:productId', authenticate, validate(updateCartProductQuantitySchema), updateCartProductQuantity);
+
+export default router;
