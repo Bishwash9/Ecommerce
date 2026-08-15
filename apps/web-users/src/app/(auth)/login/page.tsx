@@ -40,7 +40,8 @@ export default function LoginPage() {
 
                 const response = await authService.login(data.email, data.password);
 
-                login(response.data.user, response.data.accessToken);
+
+                login(response.data.user);
 
                 const requestedRedirect = searchParams.get('redirect');
 

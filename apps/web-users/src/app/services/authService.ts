@@ -25,5 +25,12 @@ export const authService = {
                 method: 'POST',
             });
          
+    },
+
+    getCurrentUser: async (): Promise<any> => {
+        const userData = await apiClient('/users/me', {
+            method: 'GET',
+        })
+        return userData;
     }
 }

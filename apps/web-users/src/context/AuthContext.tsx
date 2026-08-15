@@ -18,8 +18,7 @@ type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
 interface AuthContextValue {
     user: User | null;
     status: AuthStatus;
-    accessToken: string | null;
-    login:(user: User, accessToken: string) => void;
+    login:(user: User) => void;
     logout:() => Promise<void>;
 }
 
@@ -28,34 +27,28 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthProvider({children}: {children: React.ReactNode}) {
 
     const [user, setUser] = useState<User | null>(null);
-    const [accessToken, setAccessToken] = useState<string | null>(null);
     const [status, setStatus] = useState<AuthStatus>('loading');
 
+  
     useEffect(() => {
-        try {
-            const storedToken = localStorage.getItem('accessToken');
-            const storedUser = localStorage.getItem('user');
-
-            if(storedToken && storedUser) {
-                setAccessToken(storedToken);
-                setUser(JSON.parse(storedUser));
+        const checkUser = async () => {
+            
+             try {
+                const response = await authService.getCurrentUser();
+                setUser(response.data.user);
                 setStatus('authenticated');
-            }else {
+
+             } catch (error) {
+                setUser(null);
                 setStatus('unauthenticated');
-            }
-        } catch {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('user');
-            setStatus('unauthenticated');
+             }
+
         }
-    }, []);
+        checkUser();
+    },[])
 
-    const login = (userData: User, token: string) => {
-        localStorage.setItem('accessToken', token);
-        localStorage.setItem('user', JSON.stringify(userData));
-
+    const login = (userData: User) => {
         setUser(userData);
-        setAccessToken(token);
         setStatus('authenticated');
     };
 
@@ -64,16 +57,13 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
             //call api 
             await authService.logout();
         } finally {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('user');
             setUser(null);
-            setAccessToken(null);
             setStatus('unauthenticated');
         }
     };
 
     return (
-        <AuthContext.Provider value={{user, status, accessToken, login, logout}}>
+        <AuthContext.Provider value={{user, status, login, logout}}>
             {children}
         </AuthContext.Provider>
     );
