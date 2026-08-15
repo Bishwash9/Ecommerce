@@ -78,8 +78,17 @@ export const refreshSession = async (req: Request, res: Response) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', //encrypted only in production
         sameSite: 'strict',
-        maxAge: 7 * 24 * 60 * 60 * 1000 //7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
+        path: '/' //cookie is accessible across the entire site
     });
+
+    res.cookie('accesToken', accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', //encrypted only in production
+        sameSite: 'strict',
+        maxAge: 15 * 60 * 1000, //15 minutes
+        path: '/' //cookie is accessible across the entire site
+    })
     
 
     //return new accessToken
@@ -134,4 +143,22 @@ export const logoutUser = async (req: Request, res: Response) => {
     }
 
    
-}
+};
+
+//get current user details
+export const getCurrentUser = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as AuthenticatedRequest).user.id;
+        const user = await userService.getCurrentUser(userId);
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        res.status(400).json({
+            message: error instanceof Error ? error.message : 'Failed to fetch user details'
+        });
+    }
+};
+

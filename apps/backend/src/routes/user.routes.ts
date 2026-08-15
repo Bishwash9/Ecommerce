@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { registerUser, loginUser, refreshSession, logoutUser } from '../controllers/user.controller.js';
+import { registerUser, loginUser, refreshSession, logoutUser, getCurrentUser} from '../controllers/user.controller.js';
 
 import { validate } from '../middlewares/validate.middleware.js';
 import { registerUserSchema, loginUserSchema} from '../validations/user.validation.js';
@@ -17,5 +17,7 @@ router.post('/login', validate(loginUserSchema), loginUser);
 router.post('/logout', authenticate, logoutUser);
 
 router.post('/refresh-token', refreshSession);
+
+router.get('/me', authenticate, getCurrentUser);
 
 export default router; 

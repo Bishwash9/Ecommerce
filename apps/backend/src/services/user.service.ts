@@ -123,4 +123,19 @@ export const logoutUser = async (activeRefreshToken: string, userID: string) => 
     await user.save();
 
     return {message: 'Logged out successfully'};
-}
+};
+
+//for getting current user
+export const getCurrentUser = async (userId: string) => {
+    const user = await User.findById(userId).select('_id name email role');
+    if(!user) {
+        throw new Error('User not found');
+    }
+
+    return {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+    };
+};

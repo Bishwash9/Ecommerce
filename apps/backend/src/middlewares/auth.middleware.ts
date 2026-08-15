@@ -10,18 +10,23 @@ export interface AuthenticatedRequest extends Request {
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log('Authenticating request...');
         const authHeader = req.headers.authorization;
+
+        const bearerToken = authHeader?.startsWith('Bearer') ? authHeader.split(' ')[1] : undefined;
 
         if(!authHeader || !authHeader.startsWith('Bearer')){
             return res.status(401).json({
-                message: 'Unauthorized'
+                message: 'No Header or Invalid Authorization header provided'
             });
         };
 
-        const token = authHeader.split(' ')[1];
+        //as admin is using header and cookie supports web-users
+        const token = bearerToken || req.cookies.accessToken;
+
         if(!token) {
-            return res.status(401).json({ message: 'Unauthorized' });
+            return res.status(401).json({
+                message: 'No token. Authentication required'
+            });
         }
 
         // ensure secret is available
