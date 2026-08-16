@@ -30,8 +30,6 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}): Pr
             });
 
               if(!refreshResponse.ok) {
-                window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
-
                 throw new Error('Session expired. Please log in again.');
             }
 
