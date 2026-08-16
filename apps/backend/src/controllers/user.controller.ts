@@ -82,7 +82,7 @@ export const refreshSession = async (req: Request, res: Response) => {
         path: '/' //cookie is accessible across the entire site
     });
 
-    res.cookie('accesToken', accessToken, {
+    res.cookie('accessToken', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', //encrypted only in production
         sameSite: 'lax',

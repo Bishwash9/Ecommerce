@@ -14,12 +14,6 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 
         const bearerToken = authHeader?.startsWith('Bearer') ? authHeader.split(' ')[1] : undefined;
 
-        if(!authHeader || !authHeader.startsWith('Bearer')){
-            return res.status(401).json({
-                message: 'No Header or Invalid Authorization header provided'
-            });
-        };
-
         //as admin is using header and cookie supports web-users
         const token = bearerToken || req.cookies.accessToken;
 
