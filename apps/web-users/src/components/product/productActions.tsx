@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
+import { cartService } from '@/app/services/cartService';
 
 
 
@@ -21,7 +22,9 @@ export default function ProductActions({ productId }: ProductActionsProps) {
             return;
         }
 
-        // Logic to add the product to the cart
+        //add to cart logic
+        //call api
+        cartService.addToCart(productId, 1);
     }
 
     const handleBuyNow = () => {
