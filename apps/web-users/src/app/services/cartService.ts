@@ -8,7 +8,7 @@ export const cartService = {
             body: JSON.stringify({ productId, quantity }),
         });
 
-        if (!addToCartData.ok) {
+        if (!addToCartData.success) {
             throw new Error(addToCartData.message || 'Failed to add product to cart');
         }
 
@@ -21,7 +21,7 @@ export const cartService = {
             method: 'GET'
         });
 
-        if (!getCartData.ok) {
+        if (!getCartData.success) {
             throw new Error(getCartData.message || 'Failed to get cart');
         }
 
@@ -34,7 +34,7 @@ export const cartService = {
             method: 'DELETE'
         });
 
-        if (!removeFromCartData.ok) {
+        if (!removeFromCartData.success) {
             throw new Error(removeFromCartData.message || 'Failed to remove product from cart');
         }
 
@@ -49,7 +49,7 @@ export const cartService = {
             body: JSON.stringify({ action })
         });
 
-        if (!updateQuantityData.ok) {
+        if (!updateQuantityData.success) {
             throw new Error(updateQuantityData.message || 'Failed to update product quantity in cart');
         }
 
