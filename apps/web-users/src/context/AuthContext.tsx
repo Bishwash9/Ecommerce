@@ -35,7 +35,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
             
              try {
                 const response = await authService.getCurrentUser();
-                setUser(response.user);
+                setUser(response.data);
                 setStatus('authenticated');
 
              } catch (error) {

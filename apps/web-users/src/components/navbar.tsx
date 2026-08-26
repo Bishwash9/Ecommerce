@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import { authService } from "@/app/services/authService";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -42,13 +41,10 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await authService.logout();
-      logout(); // Update the context state
+      await logout(); // Update the context state
+      router.replace('/'); // Redirect to home page after logout
     } catch (error) {
       console.error("Logout error:", error);
-    }finally {
-      router.replace('/');
-      router.refresh(); // Refresh the page to update the UI after logout
     }
   };
 
