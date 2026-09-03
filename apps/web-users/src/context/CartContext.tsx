@@ -44,6 +44,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
     }, [status, syncCartCount]);
 
+   useEffect(() => {
+     if(status === 'authenticated') {
+        refreshCartCount();
+     } 
+     if(status === 'unauthenticated') {
+        setCartCount(0);
+     }
+   },[status, refreshCartCount]);
+
     return (
         <CartContext.Provider value={{ cartCount, syncCartCount, refreshCartCount }}>
             {children}
