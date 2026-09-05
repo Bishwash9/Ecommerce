@@ -2,7 +2,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { LoginForm } from './Features/Auth/LoginForm'
 import Dashboard from './Pages/Dashboard'
-import  { PublicRoute } from './Features/Auth/PublicRoute'
+import { PublicRoute } from './Features/Auth/PublicRoute'
 import { RouteGuard } from './Guard/RouteGuard'
 import { DashboardLayout } from './Components/Layout/DashboardLayout'
 import Inventory from './Pages/Inventory'
@@ -15,17 +15,18 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<PublicRoute />}>
-            <Route path='/' element={<LoginForm />}/>
+            <Route path='/' element={<LoginForm />} />
           </Route>
-          
-          <Route element={<DashboardLayout/>}>
 
-          <Route element={<RouteGuard/>}>
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route path='/inventory' element={<Inventory/>} />
+          <Route element={<DashboardLayout />}>
+
+            <Route element={<RouteGuard />}>
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/inventory' element={<Inventory />} />
+            </Route>
+
           </Route>
           
-          </Route>
         </Routes>
       </BrowserRouter>
     </>

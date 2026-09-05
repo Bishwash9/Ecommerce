@@ -33,7 +33,9 @@
 
 import type { Product } from "../types/product";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5001/api";
+const BASE_URL = process.env.API_INTERNAL_BASE_URL
+    || process.env.NEXT_PUBLIC_API_BASE_URL
+    || "http://localhost:5001/api";
 //server safe product service
 
 interface ProductResponse {

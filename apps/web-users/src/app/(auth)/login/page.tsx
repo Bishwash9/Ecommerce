@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { loginSchema, type LoginData, registerSchema, type RegisterData } from '../../schemas/auth';
@@ -11,7 +11,7 @@ import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import { useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginPageContent() {
     const [mode, setMode] = useState<"login" | "signup">("login");
     const [showPassword, setShowPassword] = useState(false);
 
@@ -204,4 +204,12 @@ export default function LoginPage() {
 
 
 
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<main className="min-h-screen bg-gray-100" />}>
+            <LoginPageContent />
+        </Suspense>
+    );
 }
