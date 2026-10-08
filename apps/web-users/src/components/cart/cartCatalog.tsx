@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 import { cartService } from '@/app/services/cartService';
 import { ArrowRight, Minus, Plus, ShoppingBag, X } from 'lucide-react';
 
@@ -38,6 +39,7 @@ const formatPrice = (price: number) => {
 export default function CartCatalog() {
     const router = useRouter();
     const { status } = useAuth();
+    const { syncCartCount } = useCart();
 
     const [cart, setCart] = useState<Cart | null>(null);
     const [loading, setLoading] = useState(true);
@@ -93,6 +95,8 @@ export default function CartCatalog() {
 
             //update cart state
             setCart(updatedCart);
+            //sync cart count in context
+            syncCartCount(updatedCart);
         } catch (error) {
             setError(
                 error instanceof Error ? error.message : 'Failed to update product quantity'
@@ -111,6 +115,8 @@ export default function CartCatalog() {
             const updatedCart = await cartService.removeFromCart(productId);
 
             setCart(updatedCart);
+            //sync cart count in context
+            syncCartCount(updatedCart);
         } catch (error) {
             error instanceof Error ? setError(error.message) : setError('Failed to remove product from cart');
         } finally {

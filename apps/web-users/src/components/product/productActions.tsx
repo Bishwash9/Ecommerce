@@ -3,7 +3,7 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import { cartService } from '@/app/services/cartService';
-
+import { useCart } from '@/context/CartContext';
 
 
 interface ProductActionsProps {
@@ -15,8 +15,9 @@ export default function ProductActions({ productId }: ProductActionsProps) {
     const pathname = usePathname();
 
     const { status } = useAuth();
+    const { syncCartCount } = useCart();
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         if (status !== 'authenticated') {
             router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
             return;
@@ -24,7 +25,12 @@ export default function ProductActions({ productId }: ProductActionsProps) {
 
         //add to cart logic
         //call api
-        cartService.addToCart(productId, 1);
+        try {
+            const updatedCart = await cartService.addToCart(productId, 1); // Assuming quantity is 1 for simplicity
+            syncCartCount(updatedCart); // Update the cart count in context
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+        }
     }
 
     const handleBuyNow = () => {

@@ -5,10 +5,12 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 
 
 export default function Navbar() {
   const { user, status, logout } = useAuth();
+  const { cartCount } = useCart();
   const isLoggedIn = status === "authenticated" && user !== null;
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -109,6 +111,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/cart"
+              aria-label={`Cart with ${cartCount} items`}
               className="relative text-neutral-500 hover:text-neutral-900 transition-colors"
             >
               <svg
@@ -126,6 +129,13 @@ export default function Navbar() {
                 <line x1="3" x2="21" y1="6" y2="6" />
                 <path d="M16 10a4 4 0 0 1-8 0" />
               </svg>
+              {cartCount > 0 && (
+                <span className='absolute -right-2.5 -top-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-semibold text-white leading-none'>
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
+
+
             </Link>
 
             <button
