@@ -9,6 +9,8 @@ interface User {
     name: string;
     email: string;
     role: string;
+    avatarUrl?: string;
+    phoneNumber?: string;
 }
 
 //define the status of authentication
