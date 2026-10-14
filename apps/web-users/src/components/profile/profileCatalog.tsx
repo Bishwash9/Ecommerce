@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import Image from "next/image";
 import { ArrowRight, MapPin, Package, ShoppingBag, Wallet } from "lucide-react";
+import ProfileSettings from "./settings";
 
 
 export default function ProfileCatalog() {
@@ -69,7 +70,8 @@ export default function ProfileCatalog() {
 
                 <div className='grid items-start gap-6 lg:grid-cols-[320px_minmax(0,1fr)]'>
 
-                    <aside className='rounded-2xl border border-stone-200 bg-white p-6 sm:p-7'>
+                    <aside className='relative rounded-2xl border border-stone-200 bg-white p-6 sm:p-7'>
+                        <ProfileSettings/>
                         <div className='flex flex-col pb-7 border-b border-stone-200 text-center items-center'>
                             <div className='relative flex size-24 items-center justify-center overflow-hidden rounded-full border border-stone-200 bg-stone-100'>
                                 {user.avatarUrl ? (
