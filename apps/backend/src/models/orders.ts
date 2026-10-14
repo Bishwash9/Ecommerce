@@ -28,7 +28,12 @@ const orderSchema = new Schema (
                     required: true
                 }
             }
-        ]
+        ],
+        status: {
+            type: String,
+            enum:['pending', 'delivered', 'cancelled'],
+            default: 'pending'
+        }
     },
 
     {

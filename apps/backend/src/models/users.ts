@@ -1,40 +1,49 @@
 import mongoose from 'mongoose';
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const userSchema = new Schema(
-    {
-   name : {
-        type: String,
-        required: true,
-        maxlength: 50,
-        minlength: 2,
-        match: /^[a-zA-Z\s]+$/
-   },
-   email : {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        
-   },
-   password : {
-        type: String,
-        required: true
-   },
-   role : {
-        type: String,
-        enum: ['user', 'admin'],
-        default: 'user'
-   },
-   refreshToken: {
-     type: [String],
-     default: []
-   }
-   
-},
-{
-    timestamps: true
-}
+     {
+          name: {
+               type: String,
+               required: true,
+               maxlength: 50,
+               minlength: 2,
+               match: /^[a-zA-Z\s]+$/
+          },
+          email: {
+               type: String,
+               required: true,
+               unique: true,
+               lowercase: true,
+
+          },
+          password: {
+               type: String,
+               required: true
+          },
+          role: {
+               type: String,
+               enum: ['user', 'admin'],
+               default: 'user'
+          },
+          refreshToken: {
+               type: [String],
+               default: []
+          },
+          avatarUrl: {
+               type: String,
+               default: '',
+               trim: true,
+          },
+          avatarPublicId: {
+               type: String,
+               default: ''
+          }
+
+     },
+     {
+          timestamps: true
+     }
 
 );
 

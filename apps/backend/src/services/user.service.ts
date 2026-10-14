@@ -81,7 +81,8 @@ export const loginUser = async (
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        avatarUrl: user.avatarUrl
        },
          accessToken,
          refreshToken
@@ -127,7 +128,7 @@ export const logoutUser = async (activeRefreshToken: string, userID: string) => 
 
 //for getting current user
 export const getCurrentUser = async (userId: string) => {
-    const user = await User.findById(userId).select('_id name email role');
+    const user = await User.findById(userId).select('_id name email role avatarUrl');
     if(!user) {
         throw new Error('User not found');
     }
@@ -136,6 +137,7 @@ export const getCurrentUser = async (userId: string) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        avatarUrl: user.avatarUrl
     };
 };

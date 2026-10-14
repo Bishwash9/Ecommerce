@@ -40,6 +40,9 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
         
         next();
     } catch (err) {
+         if (err instanceof Error) {
+        console.error('Authentication failed:', err.name, err.message);
+    }
         return res.status(401).json({ message: 'Unauthorized' });
     }
 }
